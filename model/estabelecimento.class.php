@@ -3,8 +3,16 @@
     private $cnpj;
     private $nome_fantasia;
     private $razao_social;
+    private $responsavel;
     /*Talvez*/
     private $n_funcionario;
+
+    public function addResponsavel(Responsavel $responsavel){
+      array_push($this->responsavel, $responsavel);
+    }
+    public function getResponsavel(){
+      return $this->responsavel;
+    }
     public function getCnpj() {
         return $this->cnpj;
     }
