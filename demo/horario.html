@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Cadastro: Horário do Estabelecimento</title>
+
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/form-validation.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+</head>
+
+
+	<header>
+		<h1>Cadastro de Horário por estabelecimento</h1>
+    </header>
+    <div class="main-content">
+        <form class="form-validation" method="post" action="#">
+          <!--imprimir o nome do estabelecimento-->
+            <div class="form-row form-input-name-row">
+            <table>
+              <tr>
+                <th>Segunda</th>
+                <th>Terça</th>
+                <th>Quarta</th>
+                <th>Quinta</th>
+                <th>Sexta</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+              </tr>
+              <tr>
+                <td><input type="time" name = "hora_inicio_segunda"></td>
+                <td><input type="time" name = "hora_inicio_terca"></td>
+                <td><input type="time" name = "hora_inicio_quarta"></td>
+                <td><input type="time" name = "hora_inicio_quinta"></td>
+                <td><input type="time" name = "hora_inicio_sexta"></td>
+                <td><input type="time" name = "hora_inicio_sabado"></td>
+                <td><input type="time" name = "hora_inicio_domingo"></td>
+              </tr>
+              <tr>
+                <td><input type="time" name ="hora_fim_segunda"></td>
+                <td><input type="time" name ="hora_fim_terca"></td>
+                <td><input type="time" name ="hora_fim_quarta"></td>
+                <td><input type="time" name ="hora_fim_quinta"></td>
+                <td><input type="time" name ="hora_fim_sexta"></td>
+                <td><input type="time" name ="hora_fim_sabado"></td>
+                <td><input type="time" name ="hora_fim_domingo"></td>
+              </tr>
+            </table>
+            </div>
+
+            <div class="form-row">
+
+                <button type="submit">Passo 3</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+        var errorField = $('.form-input-name-row');
+
+        // Adding the form-invalid-data class will show
+        // the error message and the red x for that field
+
+      //  errorField.addClass('form-invalid-data');
+      //  errorField.find('.form-invalid-data-info').text('Please enter your name');
+
+
+        // Here is how to mark a field with a green check mark
+
+        successField.addClass('form-valid-data');
+    });
+
+</script>
+
+</body>
+
+</html>
