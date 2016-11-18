@@ -1,5 +1,5 @@
 <?php
-	// require_once(controller);
+	 require_once('../control/cadastro_estabelecimento.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -94,7 +94,7 @@
 			Field.removeClass('form-valid-data');
 			if(cnpj.length!=14){
 				Field.addClass('form-invalid-data');
-				Field.find('.form-invalid-data-info').text('Informe um CNPJ Válido!');
+				Field.find('.form-invalid-data-info').text('Campo obrigatório!');
 				return 0;
 			}
 			var resto;
@@ -243,13 +243,8 @@
 
                 <label>
                     <span>Setor</span>
-                    <select name="setor">
+                    <select name="setor" id="setor">
                         <option>Escolha...</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
                     </select>
                 </label>
 
@@ -312,7 +307,7 @@
 
             <div class="form-row ">
 
-                <button type="button" onclick="validar()">Cadastrar</button>
+                <button type="button" onclick="validar()">Próximo</button>
 
             </div>
 
