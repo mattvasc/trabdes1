@@ -1,25 +1,167 @@
+<?php
+	// require_once(controller);
+?>
 <!DOCTYPE html>
 <html>
 <head>
 
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="assets/jquery-3.1.1.js"></script>
 	<script src="assets/jquery.mask.js"></script>
+	<link rel="stylesheet" href="assets/demo.css">
+	<link rel="stylesheet" href="assets/form-validation.css">
 	<title>Cadastro</title>
 	<script type="text/javascript">
-		$(document).ready(function(){
-			var SPMaskBehavior = function (val) {
-			return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-			},
-			spOptions = {
-			onKeyPress: function(val, e, field, options) {
-			field.mask(SPMaskBehavior.apply({}, arguments), options);
+		function validar(){
+			if(validar_cnpj() && validar_string('razao_social') && validar_string('nome_fantasia') && validar_string_op('site') && validar_telefone())
+			{
+				document.getElementById("myform").submit();
 			}
-			};
+			else {
+				alert("Dados inválidos! Revise o formulário e tente novamente");
+			}
+		}
+		function validar_telefone()
+		{
+			var Field = $('.form-input-telefone-row');
+			Field.removeClass('form-invalid-data');
+			Field.removeClass('form-valid-data');
+			var value = $('#telefone').cleanVal();
+			if(value.length != 10 && value.length != 11 && value.length != 0)
+			{
+				Field.addClass('form-invalid-data');
+				Field.find('.form-invalid-data-info').text('Informe um telefone Válido!');
+				return false;
+			}
+			else if(value.length != 0){
+				Field.addClass('form-valid-data');
+				return true;
+			}
+			return true;
+		}
+
+		function validar_string(id)
+		{
+				var str1 = '.form-input-';
+				var str2 = id;
+				var str3 = '-row';
+				var Field = $(str1.concat(str2,str3));
+				Field.removeClass('form-invalid-data');
+				Field.removeClass('form-valid-data');
+				var str4 = document.getElementById(id).value;
+				if(str4.length>3)
+				{
+					Field.addClass('form-valid-data');
+					return 1;
+				}
+				else if(str4.length==0)
+				{
+						Field.addClass('form-invalid-data');
+						Field.find('.form-invalid-data-info').text('Campo Obrigatório!');
+						return 0;
+				}
+				else
+				{
+						Field.addClass('form-invalid-data');
+						Field.find('.form-invalid-data-info').text('Valor muito curto!');
+						return 0;
+				}
+		}
+		function validar_string_op(id)
+		{
+				var str1 = '.form-input-';
+				var str2 = id;
+				var str3 = '-row';
+				var Field = $(str1.concat(str2,str3));
+				Field.removeClass('form-invalid-data');
+				Field.removeClass('form-valid-data');
+				var str4 = document.getElementById(id).value;
+				if(str4.length>3)
+				{
+					Field.addClass('form-valid-data');
+					return 1;
+				}
+			return 1;
+		}
+		function validar_cnpj()
+		{
+			var cnpj = $('#cnpj').cleanVal();
+			var Field = $('.form-input-cnpj-row');
+			Field.removeClass('form-invalid-data');
+			Field.removeClass('form-valid-data');
+			if(cnpj.length!=14){
+				Field.addClass('form-invalid-data');
+				Field.find('.form-invalid-data-info').text('Informe um CNPJ Válido!');
+				return 0;
+			}
+			var resto;
+			var primeiro_digito;
+			var segundo_digito;
+			var somatorio = 0;
+			somatorio+= 5 * parseInt(cnpj[0]);
+			somatorio+= 4 * parseInt(cnpj[1]);
+			somatorio+= 3 * parseInt(cnpj[2]);
+			somatorio+= 2 * parseInt(cnpj[3]);
+			somatorio+= 9 * parseInt(cnpj[4]);
+			somatorio+= 8 * parseInt(cnpj[5]);
+			somatorio+= 7 * parseInt(cnpj[6]);
+			somatorio+= 6 * parseInt(cnpj[7]);
+			somatorio+= 5 * parseInt(cnpj[8]);
+			somatorio+= 4 * parseInt(cnpj[9]);
+			somatorio+= 3 * parseInt(cnpj[10]);
+			somatorio+= 2 * parseInt(cnpj[11]);
+			resto = somatorio%11;
+			if(resto<2)
+				primeiro_digito = 0;
+			else
+				primeiro_digito = 11-resto;
+			if(parseInt(cnpj[12])!=primeiro_digito){
+				Field.addClass('form-invalid-data');
+				Field.find('.form-invalid-data-info').text('Informe um CNPJ Válido!');
+				return 0;
+			}
+			somatorio = 0;
+			somatorio += 6 * parseInt(cnpj[0]);
+			somatorio += 5 * parseInt(cnpj[1]);
+			somatorio += 4 * parseInt(cnpj[2]);
+			somatorio += 3 * parseInt(cnpj[3]);
+			somatorio += 2 * parseInt(cnpj[4]);
+			somatorio += 9 * parseInt(cnpj[5]);
+			somatorio += 8 * parseInt(cnpj[6]);
+			somatorio += 7 * parseInt(cnpj[7]);
+			somatorio += 6 * parseInt(cnpj[8]);
+			somatorio += 5 * parseInt(cnpj[9]);
+			somatorio += 4 * parseInt(cnpj[10]);
+			somatorio += 3 * parseInt(cnpj[11]);
+			somatorio += 2 * parseInt(cnpj[12]);
+			resto = somatorio%11;
+			if(resto<2)
+				segundo_digito = 0;
+			else
+				segundo_digito = 11-resto;
+			if(parseInt(cnpj[13])!=segundo_digito){
+				Field.addClass('form-invalid-data');
+				Field.find('.form-invalid-data-info').text('Informe um CNPJ Válido!');
+				return 0;
+			}
+			Field.addClass('form-valid-data');
+			return 1;
+		};
+		$(document).ready(function(){
+			//A linha a seguir é para a mascára do telfone:
+			var SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';	},spOptions = {onKeyPress: function(val, e, field, options) {field.mask(SPMaskBehavior.apply({}, arguments), options);}};
 			$('#cnpj').mask('00.000.000/0000-00', {reverse: false});
 			$('#telefone').mask(SPMaskBehavior, spOptions);
+			/*
+			 var errorField = $('.form-input-site-row');
+			 Field.addClass('form-invalid-data');
+			Field.find('.form-invalid-data-info').text('Informe um site Válido!');
+			 errorField.removeClass('form-invalid-data');
+			 var successField = $('.form-input-site-row');
+ 			 successField.addClass('form-valid-data');
+ 			 sucessField.addClass('form-invalid-data');
+			 */
 		});
 	</script>
 	<link rel="stylesheet" href="assets/demo.css">
@@ -36,69 +178,69 @@
 
         <!-- You only need this form and the form-validation.css -->
 
-        <form class="form-validation" method="post" action="#">
+        <form class="form-validation" id="myform" method="post" action="#">
 
             <div class="form-title-row">
                 <h1>Cadastro de Estabelecimento</h1>
             </div>
-            <div class="form-row form-input-name-row">
+            <div class="form-row form-input-cnpj-row">
                 <label>
                     <span>CNPJ</span>
                     <!--aplicar mascara aqui-->
-                    <input type="text" name="cnpj" id="cnpj">
+                    <input type="text" name="cnpj" id="cnpj" onblur="validar_cnpj();">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
                 <span class="form-invalid-data-info"></span>
             </div>
 
-            <div class="form-row form-input-name-row">
+            <div class="form-row form-input-razao_social-row">
                 <label>
                     <span>Razão Social</span>
-                    <input type="text" maxlength="256" id="razao_social" name="razao_social">
+                    <input type="text" maxlength="256" id="razao_social" onblur="validar_string('razao_social')" name="razao_social">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
                 <span class="form-invalid-data-info"></span>
             </div>
 
-            <div class="form-row form-input-name-row">
+            <div class="form-row form-input-nome_fantasia-row">
 
                 <label>
                     <span>Nome Fantasia</span>
-                    <input type="text" maxlength="256" name="razao_social" id="razao_social">
+                    <input type="text" maxlength="256" onblur="validar_string('nome_fantasia')" name="nome_fantasia" id="nome_fantasia">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
                 <span class="form-invalid-data-info"></span>
             </div>
 
-          <div class="form-row form-input-name-row">
+          <div class="form-row form-input-telefone-row">
             <label>
                   <span>Telefone</span>
               <!--aplicar mascara aqui-->
-                <input type="tel" name="telefone" id="telefone">
+                <input type="tel" name="telefone" id="telefone" onblur="validar_telefone()">
               </label>
               <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
               <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
               <span class="form-invalid-data-info"></span>
           </div>
 
-          <div class="form-row form-input-name-row">
+          <div class="form-row form-input-site-row">
             <label>
               <span>Site</span>
             <!--aplicar mascara aqui-->
-              <input type="text" name="site">
+              <input type="text" name="site" id="site" onblur="validar_string_op('site')">
             </label>
             <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
             <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
             <span class="form-invalid-data-info"></span>
           </div>
 
-            <div class="form-row">
+            <div class="form-row form-input-setor-row">
 
                 <label>
-                    <span>Local</span>
+                    <span>Setor</span>
                     <select name="setor">
                         <option>Escolha...</option>
                         <option>A</option>
@@ -110,7 +252,7 @@
                 </label>
 
             </div>
-            <div class="form-row">
+            <div class="form-row form-input-local-subsetor">
 
                 <label>
                     <span>Subsetor</span>
@@ -126,7 +268,7 @@
 
             </div>
 
-            <div class="form-row">
+            <div class="form-row form-input-categoria">
 
                 <label class="form-checkbox">
                   <!--TAB é no CSS -->
@@ -166,38 +308,15 @@
 
             </div>
 
-            <div class="form-row">
+            <div class="form-row ">
 
-                <button type="submit">Passo 2</button>
+                <button type="button" onclick="validar()">Cadastrar</button>
 
             </div>
 
         </form>
 
     </div>
-
-
-
-<script>
-/*
-    $(document).ready(function() {
-
-        // Here is how to show an error message next to a form field
-
-        var errorField = $('.form-input-name-row');
-
-        // Adding the form-invalid-data class will show
-        // the error message and the red x for that field
-
-        //errorField.addClass('form-invalid-data');
-        //errorField.find('.form-invalid-data-info').text('Please enter your name');
-
-
-        // Here is how to mark a field with a green check mark
-        successField.addClass('form-valid-data');
-    });
-*/
-</script>
 
 </body>
 
