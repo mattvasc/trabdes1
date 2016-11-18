@@ -1,6 +1,3 @@
-<?php
-	// require_once(controller);
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,7 +91,7 @@
 			Field.removeClass('form-valid-data');
 			if(cnpj.length!=14){
 				Field.addClass('form-invalid-data');
-				Field.find('.form-invalid-data-info').text('Informe um CNPJ Válido!');
+				Field.find('.form-invalid-data-info').text('Campo obrigatório!');
 				return 0;
 			}
 			var resto;
@@ -166,6 +163,38 @@
 			 */
 		});
 	</script>
+
+	<script>
+		function SubSetorizar() {
+
+			var select = document.getElementById("SubSetor");
+			var option;
+
+			while (select.length > 1) {
+				select.remove(select.length-1);
+			}
+
+			$.ajax({
+        url: '../control/setor.php',
+        type: "POST",
+        data: { Setor: $('#setor').val() },
+        //dataType: 'application/json; charset=utf-8',
+        success: function (result) {
+					result = JSON.parse(result);
+
+						//alert(data);
+            for (var x = 0; x < result.length; x++) {
+							//alert(result[x]);
+							option = document.createElement('option');
+			        option.text = option.value = result[x];
+			        select.add(option, select.length);
+						}
+        }
+    });
+		}
+
+	</script>
+
 	<link rel="stylesheet" href="assets/demo.css">
 	<link rel="stylesheet" href="assets/form-validation.css">
 
@@ -243,13 +272,8 @@
 
                 <label>
                     <span>Setor</span>
-                    <select name="setor">
+                    <select name="setor" id="setor" onchange="SubSetorizar();">
                         <option>Escolha...</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
                     </select>
                 </label>
 
@@ -258,13 +282,8 @@
 
                 <label>
                     <span>Subsetor</span>
-                    <select name="subsetor">
+                    <select name="subsetor" id="SubSetor">
                         <option>Escolha...</option>
-                        <option>01</option>
-                        <option>02</option>
-                        <option>03</option>
-                        <option>04</option>
-                        <option>05</option>
                     </select>
                 </label>
 
@@ -312,7 +331,7 @@
 
             <div class="form-row ">
 
-                <button type="button" onclick="validar()">Cadastrar</button>
+                <button type="button" onclick="validar()">Próximo</button>
 
             </div>
 
@@ -321,5 +340,9 @@
     </div>
 
 </body>
+
+<?php
+	 require_once('../control/cadastro_estabelecimento.php');
+?>
 
 </html>

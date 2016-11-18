@@ -1,4 +1,10 @@
-/*Esse .txt serve para os integrantes do grupo não se perderem e fazer as mesmas coisas... */
-Carla: class cadastro responsáveis e menu
-Ingrid: (?)
-Mateus: 
+/*Esse .txt serve para os integrantes do grupo não se perderem fazendo as mesmas coisas... */
+Carla:
+ * class cadastro_responsáveis
+ * Fazer o menu
+Ingrid:
+Marcos:
+Mateus:
+  * Terminar a classe estabelecimento
+  * Terminar o controle do estabelecimento
+  * Aprender a soltar haduken.
