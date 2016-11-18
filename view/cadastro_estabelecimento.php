@@ -11,6 +11,8 @@
 	<script src="assets/jquery.mask.js"></script>
 	<link rel="stylesheet" href="assets/demo.css">
 	<link rel="stylesheet" href="assets/form-validation.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
 	<title>Cadastro</title>
 	<script type="text/javascript">
 		function validar(){
