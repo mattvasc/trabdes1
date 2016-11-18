@@ -1,3 +1,3 @@
 # trabdes1
-Trabalho intregado de Bancos de Dados com Engenharia de Software I - Cadastro de Estabelecimentos de Aeroporto.
-Oi
+Trabalho integrado de Bancos de Dados com Engenharia de Software I;
+Cadastro de Estabelecimentos do Aeroporto 2101_Airlines.
