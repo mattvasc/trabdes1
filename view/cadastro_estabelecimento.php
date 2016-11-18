@@ -6,13 +6,11 @@
 <head>
 
 	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="assets/jquery-3.1.1.js"></script>
 	<script src="assets/jquery.mask.js"></script>
 	<link rel="stylesheet" href="assets/demo.css">
 	<link rel="stylesheet" href="assets/form-validation.css">
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 	<title>Cadastro</title>
 	<script type="text/javascript">
 		function validar(){
