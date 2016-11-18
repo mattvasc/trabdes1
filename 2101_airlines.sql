@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 18, 2016 at 03:26 
+-- Generation Time: Nov 18, 2016 at 10:44 
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
@@ -54,31 +54,6 @@ INSERT INTO `categoria` (`nome`, `descricao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categoria_horario`
---
-
-CREATE TABLE `categoria_horario` (
-  `cnpj` varchar(14) NOT NULL,
-  `dia_semana` varchar(13) NOT NULL,
-  `horario_inicio` time NOT NULL,
-  `horario_fim` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `categoria_horario`
---
-
-INSERT INTO `categoria_horario` (`cnpj`, `dia_semana`, `horario_inicio`, `horario_fim`) VALUES
-('05147458000191', 'Segunda-Feira', '11:00:00', '24:00:00'),
-('05147458000191', 'Sexta-Feira', '07:00:00', '23:00:00'),
-('58745612000193', 'Quarta-Feira', '12:00:00', '23:00:00'),
-('58745612000193', 'Segunda-Feira', '11:00:00', '24:00:00'),
-('58745612000193', 'Sexta-Feira', '07:00:00', '23:00:00'),
-('95446425000135', 'Quarta-Feira', '12:00:00', '23:00:00');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `estabelecimento`
 --
 
@@ -124,6 +99,31 @@ INSERT INTO `estabelecimento_categoria` (`cnpj`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `estabelecimento_horario`
+--
+
+CREATE TABLE `estabelecimento_horario` (
+  `cnpj` varchar(14) NOT NULL,
+  `dia_semana` varchar(13) NOT NULL,
+  `horario_inicio` time NOT NULL,
+  `horario_fim` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `estabelecimento_horario`
+--
+
+INSERT INTO `estabelecimento_horario` (`cnpj`, `dia_semana`, `horario_inicio`, `horario_fim`) VALUES
+('05147458000191', 'Segunda-Feira', '11:00:00', '24:00:00'),
+('05147458000191', 'Sexta-Feira', '07:00:00', '23:00:00'),
+('58745612000193', 'Quarta-Feira', '12:00:00', '23:00:00'),
+('58745612000193', 'Segunda-Feira', '11:00:00', '24:00:00'),
+('58745612000193', 'Sexta-Feira', '07:00:00', '23:00:00'),
+('95446425000135', 'Quarta-Feira', '12:00:00', '23:00:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `estabelecimento_local`
 --
 
@@ -151,7 +151,6 @@ INSERT INTO `estabelecimento_local` (`cnpj`, `setor`, `subsetor`, `data_inicio`,
 --
 
 CREATE TABLE `horario` (
-  `dia_semana` varchar(13) NOT NULL,
   `horario_inicio` time NOT NULL,
   `horario_fim` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -160,11 +159,11 @@ CREATE TABLE `horario` (
 -- Dumping data for table `horario`
 --
 
-INSERT INTO `horario` (`dia_semana`, `horario_inicio`, `horario_fim`) VALUES
-('Segunda-Feira', '08:00:00', '24:00:00'),
-('Segunda-Feira', '11:00:00', '24:00:00'),
-('Quarta-Feira', '12:00:00', '23:00:00'),
-('Sexta-Feira', '07:00:00', '23:00:00');
+INSERT INTO `horario` (`horario_inicio`, `horario_fim`) VALUES
+('08:00:00', '24:00:00'),
+('11:00:00', '24:00:00'),
+('12:00:00', '23:00:00'),
+('07:00:00', '23:00:00');
 
 -- --------------------------------------------------------
 
@@ -175,14 +174,14 @@ INSERT INTO `horario` (`dia_semana`, `horario_inicio`, `horario_fim`) VALUES
 CREATE TABLE `local` (
   `setor` varchar(32) NOT NULL,
   `subsetor` varchar(32) NOT NULL,
-  `tamanho` float NOT NULL
+  `area` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `local`
 --
 
-INSERT INTO `local` (`setor`, `subsetor`, `tamanho`) VALUES
+INSERT INTO `local` (`setor`, `subsetor`, `area`) VALUES
 ('Terminal 1', 'D', 10),
 ('Terminal 2', 'A', 25),
 ('Terminal 2', 'H', 25),
@@ -228,12 +227,6 @@ ALTER TABLE `categoria`
   ADD PRIMARY KEY (`nome`);
 
 --
--- Indexes for table `categoria_horario`
---
-ALTER TABLE `categoria_horario`
-  ADD PRIMARY KEY (`cnpj`,`dia_semana`,`horario_inicio`,`horario_fim`);
-
---
 -- Indexes for table `estabelecimento`
 --
 ALTER TABLE `estabelecimento`
@@ -244,6 +237,12 @@ ALTER TABLE `estabelecimento`
 --
 ALTER TABLE `estabelecimento_categoria`
   ADD PRIMARY KEY (`cnpj`,`nome`);
+
+--
+-- Indexes for table `estabelecimento_horario`
+--
+ALTER TABLE `estabelecimento_horario`
+  ADD PRIMARY KEY (`cnpj`,`dia_semana`,`horario_inicio`,`horario_fim`);
 
 --
 -- Indexes for table `estabelecimento_local`
