@@ -3,12 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 08, 2016 at 12:48 PM
+-- Generation Time: Nov 18, 2016 at 02:23 
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "-03:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -19,8 +19,6 @@ SET time_zone = "-03:00";
 --
 -- Database: `2101_airlines`
 --
-CREATE DATABASE IF NOT EXISTS `2101_airlines` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `2101_airlines`;
 
 -- --------------------------------------------------------
 
@@ -32,6 +30,26 @@ CREATE TABLE `categoria` (
   `nome` varchar(64) NOT NULL,
   `descricao` varchar(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `categoria`
+--
+
+INSERT INTO `categoria` (`nome`, `descricao`) VALUES
+('Aluguel de Carros', ''),
+('Banco', ''),
+('Bar', ''),
+('Café', ''),
+('Casa de Câmbio', ''),
+('Doces e Sorvetes', ''),
+('Drogaria', ''),
+('Fast Food', ''),
+('Livraria', ''),
+('Moda/Presentes', ''),
+('Órgão Público', ''),
+('Perfumaria', ''),
+('Restaurante', ''),
+('Transporte de Carga', '');
 
 -- --------------------------------------------------------
 
