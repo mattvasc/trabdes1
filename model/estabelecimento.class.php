@@ -9,9 +9,9 @@
     private $setor;
     private $subsetor;
     private $data_inicio;
+    private $data_fim;
     private $horario_incio;
     private $horario_fim;
-    private $data_fim;
     private $categoria;
     private $n_funcionario;
     public function __construct(/* cnpj, nome_fantasia, razao_social, setor, subsetor, data_inicio, horario, [data_fim, ]*/){
