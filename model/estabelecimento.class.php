@@ -15,6 +15,7 @@
     private $categoria;
     private $n_funcionario;
     public function __construct(/* cnpj, nome_fantasia, razao_social, setor, subsetor, data_inicio, horario, [data_fim, ]*/){
+      //$_POST['cnpj'], $_POST['nome_fantasia'], $_POST['razao_social'], $_POST['setor'], $_POST['subsetor'], $_POST['data_inicio'], $_POST['horario']);
         $this->categoria = array();
         $this->responsavel = array();
         $this->n_funcionario = 0;
@@ -27,7 +28,9 @@
           $this->setSetor(func_get_arg(3));
           $this->setSubSetor(func_get_arg(4));
           $this->setDataInicio(func_get_arg(5));
-          $this->setHorario(func_get_arg(6));
+          $arrai = explode(",",func_get_arg(6));
+          $this->setHorarioInicio($arrai[0]);
+          $this->setHorarioFim($arrai[1]);
         }
         if($num_args>=8)
         $this->setDataFim(func_get_arg(6));
@@ -117,29 +120,9 @@
     public function setNFuncionario($n_funcionario){
       $this->n_funcionario = $n_funcionario;
     }
-    public function salvar(){
-      // Retorna null se salvou, else o erro
+    private function salvarCategoria(){
       require_once('../control/Connection.php');
       $conn = Connection::open();
-      $query = "SELECT * FROM `estabelecimento` WHERE `cnpj` = '$this->cnpj';";
-      $result = mysqli_query($conn,$query);
-      if(!mysqli_fetch_assoc($result))
-        mysqli_query($conn, "INSERT INTO `estabelecimento` (`cnpj`, `nome_fantasia`, `razao_social`, `n_funcionario`) VALUES ('$this->cnpj', '$this->nome_fantasia', '$this->razao_social', $this->n_funcionario);");
-      else
-        mysqli_query($conn,"UPDATE `estabelecimento` SET `nome_fantasia`='$this->nome_fantasia',`razao_social`='$this->razao_social', `n_funcionario`=$this->n_funcionario WHERE `cnpj` = '$this->cnpj';");
-
-      if(!empty($this->telefone)){
-        $query = "UPDATE `estabelecimento` SET `telefone`= '$this->telefone' WHERE  `cnpj`= '$this->cnpj';";
-        mysqli_query($conn, $query);
-      }
-      if(!empty($this->site))
-        mysqli_query($conn, "UPDATE `estabelecimento` SET `site`= '$this->site' WHERE  `cnpj`= '$this->cnpj';");
-
-      $result = mysqli_query($conn, $query);
-      if(!$result){
-        Connection::closeConnection($conn);
-        return 0;
-      }
       // Inserindo as categorias no que esse estabelecimento se associa no banco:
       if(!empty($this->categoria)){
         foreach ($this->categoria as $c) {
@@ -150,20 +133,67 @@
           }
         }
       }
-      //Inserindo o horário de funcionamento
-      if(!empty($this->horario)){
-        $query =
-      }
-      //Inserindo o local que esse estabelecimento fica:
-      if(!empty($this->setor) && !empty($this->subsetor)  && !empty($this->data_inicio)){
-        if(!empty($this->data_fim))
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$this->setor','$this->subsetor',$this->data_inicio,$this->data_fim);";
-        else
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$this->setor','$this->subsetor',$this->data_inicio);";
-        mysqli_query($conn,$query);
-      }
       Connection::closeConnection($conn);
       return 1;
+
+    }
+    private function salvarHorario(){
+      //Inserindo o horário de funcionamento
+      $retorno = 0;
+      if(!empty($this->horario_inicio) && !empty($this->horario_fim)){
+        require_once('../control/Connection.php');
+        $conn = Connection::open();
+        $query = "INSERT INTO `estabelecimento_horario`(`cnpj`, `horario_inicio`, `horario_fim`) VALUES ('$this->cnpj', '$this->horario_inicio', '$this->horario_fim');";
+        $retorno = mysqli_query($conn,$query);
+        Connection::closeConnection($conn);
+
+      }
+
+      return $retorno;
+    }
+    private function salvarLocal(){
+      //Inserindo o local que esse estabelecimento fica:
+      require_once('../control/Connection.php');
+      $conn = Connection::open();
+      if(!empty($this->setor) && !empty($this->subsetor)  && !empty($this->data_inicio)){
+        if(!empty($this->data_fim))
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$this->setor','$this->subsetor','$this->data_inicio','$this->data_fim');";
+        else
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$this->setor','$this->subsetor','$this->data_inicio');";
+        if(mysqli_query($conn,$query))
+        {
+          Connection::closeConnection($conn);
+          return 1;
+        }
+        else {
+          Connection::closeConnection($conn);
+          return 0;
+        }
+      }
+      return 0;
+    }
+    private function salvarEstabelecimento(){
+      require_once('../control/Connection.php');
+      $conn = Connection::open();
+      $query = "SELECT * FROM `estabelecimento` WHERE `cnpj` = '$this->cnpj';";
+      $result = mysqli_query($conn,$query);
+      if(!mysqli_fetch_assoc($result))
+        mysqli_query($conn, "INSERT INTO `estabelecimento` (`cnpj`, `nome_fantasia`, `razao_social`, `n_funcionario`) VALUES ('$this->cnpj', '$this->nome_fantasia', '$this->razao_social', $this->n_funcionario);");
+      else //Update or return 0;
+        mysqli_query($conn,"UPDATE `estabelecimento` SET `nome_fantasia`='$this->nome_fantasia',`razao_social`='$this->razao_social', `n_funcionario`=$this->n_funcionario WHERE `cnpj` = '$this->cnpj';");
+
+      if(!empty($this->telefone)){
+        $query = "UPDATE `estabelecimento` SET `telefone`= '$this->telefone' WHERE  `cnpj`= '$this->cnpj';";
+        mysqli_query($conn, $query);
+      }
+      if(!empty($this->site))
+        mysqli_query($conn, "UPDATE `estabelecimento` SET `site`= '$this->site' WHERE  `cnpj`= '$this->cnpj';");
+    }
+    public function salvar(){
+        $this->salvarEstabelecimento();
+        $this->salvarLocal();
+        $this->salvarHorario();
+        $this->salvarCategoria();
     }
     public function carregar(/*cnpj*/){
       //Lógica necessária para selecionar
