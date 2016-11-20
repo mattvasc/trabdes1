@@ -14,4 +14,5 @@ final class Connection{
              mysqli_close($conn);
   }
 }
+
 ?>

@@ -35,13 +35,13 @@
          ?>
         checkbox = document.createElement('input');
         checkbox.type = "checkbox";
-        checkbox.name = "chkBx";
+        checkbox.name = "chkBx[]";
         checkbox.value = "<?php echo $row['nome'];?>";
         checkbox.id = checkbox.value;
 
         label = document.createElement('label')
         label.htmlFor = checkbox.value;
-        label.appendChild(document.createTextNode('<?php echo utf8_encode($row['nome']);?>'));
+        label.appendChild(document.createTextNode('<?php echo $row['nome'];?>'));
         <?php if($i%2==0) {
         ?>
           row = document.createElement('div');
@@ -72,20 +72,52 @@
       }
 
   }
+  $query = "SELECT * FROM `horario`;";
+  $result = mysqli_query($conn,$query);
+  ?> var select = document.getElementById("horario");
+  <?php
+  while($row = mysqli_fetch_assoc($result)){
+    ?>
+        option = document.createElement('option');
+        option.value = "<?php echo $row['horario_inicio'].','.$row['horario_fim'];?>";
+        <?php
+        if($row['horario_inicio']!='00:00:00' || $row['horario_fim']!='23:59:59'){ ?>
+          option.text = "<?php echo substr($row['horario_inicio'],0,5)." - ".substr($row['horario_fim'],0,5);?>";
+        <?php
+      } else{
+        ?>
+        option.text = "24 horas";
+        <?php
+      } ?>
+        select.add(option, select.length);
+
+    <?php
+  }
   Connection::closeConnection($conn);
     ?>
-    /*$('input[type="checkbox"][name="chkBx"]').on('change',function(){
-      var getArrVal = $('input[type="checkbox"][name="chkBx"]:checked').map(function(){
-        return this.value;
-      }).toArray();
-      if(getArrVal.length){
-      //execute the code
-      $('#cont').html(getArrVal.toString());
-      } else {
-        $(this).prop("checked",true);
-        return false;
-      };
-    });*/
     };
   </script>
 <?php
+if(!empty($_POST))
+{
+  require_once("../model/estabelecimento.class.php");
+  if(isset($_POST['cnpj'], $_POST['razao_social'], $_POST['nome_fantasia'], $_POST['setor'], $_POST['subsetor'], $_POST['chkBx'], $_POST['data_inicio'], $_POST['horario']))
+  {
+    $estabelecimento = new Estabelecimento($_POST['cnpj'], $_POST['nome_fantasia'], $_POST['razao_social'], $_POST['setor'], $_POST['subsetor'], $_POST['data_inicio'], $_POST['horario']);
+    foreach($_POST['chkBx'] as $categoria ){
+      $estabelecimento->addCategoria($categoria);
+    }
+    if(isset($_POST['site']) && !empty($_POST['site']))
+      $estabelecimento->setSite($_POST['site']);
+    if(isset($_POST['telefone']) && !empty($_POST['telefone']))
+      $estabelecimento->setTelefone($_POST['telefone']);
+    if(isset($_POST['data_fim'])&& !empty($_POST['data_fim']))
+      $estabelecimento->setDataFim($_POST['data_fim']);
+    $estabelecimento->salvar();
+    // ir para cadastro_responsavel com cnpj via $_POST;
+  }
+  else {
+    echo "Houve um erro ao requesitar sua solicitação! Revise todos os campos e tente novamente.";
+
+  }
+}
