@@ -1,19 +1,47 @@
 <!DOCTYPE html>
-      <html>
-        <head>
-          <meta content="text/html; charset=UTF-8" http-equiv="content-type">
-          <title>Trabalho BD/ES1</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
-          <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-        </head>
-        <body>
-          <fieldset> <legend>Cadastro:</legend> <input value="Estabelecimento"
-type="button" onclick='window.location.href="./view/cadastro_estabelecimento.php"'>
-    			<input value="Responsavel de Estabelecimento" type="button">
-              		<input value="Categorias" type="button">
+<html lang="pt-br">
 
-          </fieldset>
-</body></html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>2101 Airlines</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="view/assets/css/demo.css">
+    <link href="view/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+    <link href="view/assets/css/personalizado.css" rel="stylesheet">
+  </head>
+  <header>
+		<h1>2101 Airlines</h1>
+    </header>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <a class="btn btn-primary botao_personalizado center-block" href="view/cadastro_estabelecimento.php"><b>I</b>nserir</a>
+        </div>
+        <div class="col-md-6">
+          <a class="btn btn-primary botao_personalizado center-block" href="https://www.google.com.br"><b>A</b>lterar</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <a class="btn btn-primary botao_personalizado center-block" href="https://www.facebook.com"><b>D</b>esativar</a>
+        </div>
+        <div class="col-md-6">
+          <a class="btn btn-primary botao_personalizado center-block" href="https://www.youtube.com"><b>R</b>elatório</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
