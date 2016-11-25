@@ -1,7 +1,7 @@
 /*Esse .txt serve para os integrantes do grupo não se perderem fazendo as mesmas coisas... */
 Carla:
- * class cadastro_responsáveis
- * Fazer o menu
+* submenus 
+
 Ingrid:
 Marcos:
 Mateus:
