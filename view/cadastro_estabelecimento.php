@@ -362,9 +362,14 @@
 					var Field = $('.form-input-cnpj-row');
 					Field.removeClass('form-invalid-data');
 					Field.removeClass('form-valid-data');
-					if(cnpj.length!=14){
+					if(cnpj.length == 0){
 						Field.addClass('form-invalid-data');
 						Field.find('.form-invalid-data-info').text('Campo obrigatório!');
+						return 0;
+					}
+					if(cnpj.length!=14){
+						Field.addClass('form-invalid-data');
+						Field.find('.form-invalid-data-info').text('Campo incompleto!');
 						return 0;
 					}
 					var resto;
