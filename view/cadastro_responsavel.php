@@ -40,7 +40,7 @@
 
         <form class="form-validation" method="post" action="#">
             <div class="form-title-row">
-                <h1>Cadastro de Responsável por estabelecimento: <?php echo $estabelecimento->getCnpj()?></h1>
+                <h1>Cadastro de Responsável por estabelecimento: </h1>
             </div>
             <fieldset><legend>Responsável:</legend>
                 <div id = "container">
