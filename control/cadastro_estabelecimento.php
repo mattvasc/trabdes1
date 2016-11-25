@@ -115,6 +115,22 @@ if(!empty($_POST))
       $estabelecimento->setDataFim($_POST['data_fim']);
     $estabelecimento->salvar();
     // ir para cadastro_responsavel com cnpj via $_POST;
+    $url = './cadastro_responsavel.php';
+    $fields = array(
+      'estabelecimento' => $estabelecimento;
+    );
+
+    $postvar = http_build_query($fields);
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
+    $result = curl_exec($ch);
+
+    // close connection
+    curl_close($ch);
+
   }
   else {
     echo "Houve um erro ao requesitar sua solicitação! Revise todos os campos e tente novamente.";
