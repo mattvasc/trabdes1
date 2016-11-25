@@ -6,7 +6,7 @@
 -- Generation Time: Nov 25, 2016 at 03:10 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.6.24
-
+-- Criado pelo grupo mais lindo dessa UFSCar.
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "-03:00";
 
