@@ -1,5 +1,6 @@
 <?php
-    if(!isset($_POST['estabelecimento'])){
+    $estabelecimento = file_get_contents('../model/estabelecimento.temp');
+    if(empty($estabelecimento)){
         ?>
         <script type="text/javascript">
 
@@ -7,6 +8,10 @@
         </script>
         <?php
     }
+    // echo $_SESSION['estabelecimento']->cnpj;
+    require_once('../model/estabelecimento.class.php');
+    $estabelecimento = unserialize($estabelecimento);
+    // $fp = fopen("/tmp/file.txt", "r+");
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -35,7 +40,7 @@
 
         <form class="form-validation" method="post" action="#">
             <div class="form-title-row">
-                <h1>Cadastro de Responsável por estabelecimento</h1>
+                <h1>Cadastro de Responsável por estabelecimento: <?php echo $estabelecimento->getCnpj()?></h1>
             </div>
             <fieldset><legend>Responsável:</legend>
                 <div id = "container">

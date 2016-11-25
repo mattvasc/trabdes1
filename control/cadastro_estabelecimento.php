@@ -114,22 +114,15 @@ if(!empty($_POST))
     if(isset($_POST['data_fim'])&& !empty($_POST['data_fim']))
       $estabelecimento->setDataFim($_POST['data_fim']);
     $estabelecimento->salvar();
+
+    file_put_contents('../model/estabelecimento.temp', serialize($estabelecimento));
+
+    ?>
+      <script type="text/Javascript">
+        window.location.href = 'cadastro_responsavel.php';
+      </script>
+    <?php
     // ir para cadastro_responsavel com cnpj via $_POST;
-    $url = './cadastro_responsavel.php';
-    $fields = array(
-      'estabelecimento' => $estabelecimento;
-    );
-
-    $postvar = http_build_query($fields);
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, count($fields));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postvars);
-    $result = curl_exec($ch);
-
-    // close connection
-    curl_close($ch);
 
   }
   else {

@@ -501,6 +501,7 @@
 				}
 			</script>
 			<?php
+
 				 require_once('../control/cadastro_estabelecimento.php');
 			?>
 		</footer>

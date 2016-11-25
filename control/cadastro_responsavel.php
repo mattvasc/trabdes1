@@ -1,5 +1,5 @@
 <?php
-if(!empty($_POST) && isset($_POST['estabelecimento']))
+if(!empty($_POST) && isset($_SESSION['estabelecimento']))
 {
   require_once("../model/responsavel.class.php");
   if(isset($_POST['cpf_sem_mascara'], $_POST['nome'], $_POST['telefone'], $_POST['acao'])){
@@ -10,6 +10,7 @@ if(!empty($_POST) && isset($_POST['estabelecimento']))
     //$responsavel->salvar();
     $_POST['estabelecimento']->addResponsavel($responsavel);
     if($_POST['acao'] == 'salvar'){
+      unlink('../model/estabelecimento.temp');
       /*salvar responsáveis*/
       $_POST['estabelecimento']->salvarResponsavel();
       ?>
