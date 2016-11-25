@@ -4,6 +4,18 @@
     private $nome;
     private $telefone;
     private $email;
+
+  public function __construct(/* cpf, nome, telfone, [email] */){
+      $num_args = func_num_args();
+      if($num_args >= 3){
+        $this->setCpf(func_get_arg(0));
+        $this->setNome(func_get_arg(1));
+        $this->setTelefone(func_get_arg(2));
+      }
+      if($num_args == 4)
+      $this->setEmail(func_get_arg(3));
+  }
+
     public function getCpf(){
       return $this->cpf;
     }
