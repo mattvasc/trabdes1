@@ -20,9 +20,11 @@
         $this->responsavel = array();
         $this->n_funcionario = 0;
         $num_args = func_num_args();
+        if($num_args>=1){
+          $this->setCnpj(func_get_arg(0));
+        }
         if($num_args>=7)
         {
-          $this->setCnpj(func_get_arg(0));
           $this->setNomeFantasia(func_get_arg(1));
           $this->setRazaoSocial(func_get_arg(2));
           $this->setSetor(func_get_arg(3));
@@ -212,15 +214,14 @@
         $this->salvarHorario();
         $this->salvarCategoria();
     }
-    public function carregar(/*cnpj*/){
+    public function carregar(){
       //Lógica necessária para selecionar
-      $this->cnpj = func_get_arg(0);
       $conn = Connection::open();
       $query = "SELECT * FROM `estabelecimento` WHERE `cnpj` = '$this->cnpj';";
       $result = mysqli_query($conn,$query);
       Connection::closeConnection($conn);
-      if($result){
-        $row = mysqli_fetch_assoc($result);
+      if($row = mysqli_fetch_assoc($result)){
+
         $this->razao_social = $row['razao_social'];
         $this->nome_fantasia = $row['nome_fantasia'];
         $this->n_funcionario = $row['n_funcionario'];
