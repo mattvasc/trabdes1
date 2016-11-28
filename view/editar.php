@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-br">
 	<head>
-		<meta charset="utf-8">
+		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<script src="assets/js/jquery-3.1.1.js"></script>
@@ -15,12 +15,17 @@
 	<header>
 		<h1 onclick="window.location.href='../index.php'" style="cursor: pointer;">2101 Airlines</h1>
 	</header>
+	<script>
+	<?php
+		require_once('../control/editar_estabelecimento.php');
+	?>
+	</script>
     <div class="main-content">
 
         <!-- You only need this form and the form-validation.css -->
 
         <form class="form-validation" id="myform" method="post" action="#">
-			<input type="hidden" name="prox" value="salvar">
+			<input type="hidden" name="prox" value="alterar">
             <div class="form-title-row">
                 <h1>Cadastro de Estabelecimento</h1>
             </div>
@@ -241,7 +246,7 @@
 						else if(str4.length==0)
 						{
 								Field.addClass('form-invalid-data');
-								Field.find('.form-invalid-data-info').text('Campo Obrigatório!');
+								Field.find('.form-invalid-data-info').text('Campo Obrigatário!');
 								return 0;
 						}
 						else
@@ -427,7 +432,7 @@
 					return 1;
 				};
 				$(document).ready(function(){
-					//A linha a seguir é para a mascára do telfone:
+					//A linha a seguir � para a masc�ra do telfone:
 					var SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';	},spOptions = {onKeyPress: function(val, e, field, options) {field.mask(SPMaskBehavior.apply({}, arguments), options);}};
 					$('#cnpj').mask('00.000.000/0000-00', {reverse: false});
 					$('#telefone').mask(SPMaskBehavior, spOptions);

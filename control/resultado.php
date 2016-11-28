@@ -21,7 +21,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
-  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por CNPJ: <br> 123.XXX.XXX-XXXX-XX  
+  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por CNPJ: <br> 123.XXX.XXX-XXXX-XX
     <table border="1">
       <tr>
         <th>CNPJ</th>
@@ -31,11 +31,11 @@ tr:nth-child(even) {
         <th>Ação</th>
       </tr>
       <tr>
-        <td>123.123.412</td>
+        <td class="cnpj-mask" id='cnpj_1'>95078178000161</td>
         <td> Méc Dolands</td>
         <td> Restaurante da Dona Maria LTDA </td>
         <td> 8 </td>
-        <td> <href style="cursor: pointer;"> Editar </href> | <href style="cursor: pointer;"> Desativar </href> | Funcionários </td>
+        <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_1').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
       </tr>
       <tr>
         <td>123123123213</td>
@@ -45,7 +45,17 @@ tr:nth-child(even) {
         <td> <href style="cursor: pointer;"> Editar </href> | <href style="cursor: pointer;"> Desativar </href> | Funcionários </td>
       </tr>
     </table>
-
+    <script>
+    $(document).ready(function(){
+      $('.cnpj-mask').mask('00.000.000/0000-00', {reverse: false});
+    });
+    function desativar(cnpj){
+      var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
+      if (r) {
+          alert("Stub de apagar");
+      }
+    }
+    </script>
     </center>
     <?php
     /*
