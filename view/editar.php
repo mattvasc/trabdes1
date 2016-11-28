@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="assets/css/demo.css">
 		<link rel="stylesheet" href="assets/css/form-validation.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-		<title>Cadastro</title>
+		<title>Editar</title>
 </head>
 <body>
 	<header>
@@ -27,15 +27,15 @@
         <form class="form-validation" id="myform" method="post" action="#">
 			<input type="hidden" name="prox" value="alterar">
             <div class="form-title-row">
-                <h1>Cadastro de Estabelecimento</h1>
+                <h1>Editar Estabelecimento</h1>
             </div>
 						<fieldset> <legend> Estabelecimento: </legend>
             <div class="form-row form-input-cnpj-row">
                 <label>
                     <span>CNPJ:</span>
                     <!--aplicar mascara aqui-->
-                    <input type="text" id="cnpj" onblur="coisar_cnpj();">
-										<input type="hidden" id="cnpj-semmask" name="cnpj">
+                    <input type="text" id="cnpj" disabled="disabled">
+					<input type="hidden" id="cnpj-semmask" name="cnpj">
 
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
@@ -434,7 +434,7 @@
 				$(document).ready(function(){
 					//A linha a seguir é para a mascára do telfone:
 					var SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';	},spOptions = {onKeyPress: function(val, e, field, options) {field.mask(SPMaskBehavior.apply({}, arguments), options);}};
-					$('#cnpj').mask('00.000.000/0000-00', {reverse: false});
+				//	$('#cnpj').mask('00.000.000/0000-00', {reverse: false;});
 					$('#telefone').mask(SPMaskBehavior, spOptions);
 					$('#data_inicio').mask('00/00/0000');
 					$('#data_fim').mask('00/00/0000');

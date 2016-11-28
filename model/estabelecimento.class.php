@@ -232,4 +232,13 @@
       else
         return 0;
     }
+    public function carregarCategoria(){
+      $conn = Connection::open();
+      $query = "SELECT estabelecimento_categoria.nome FROM `estabelecimento` INNER JOIN estabelecimento_categoria ON estabelecimento.cnpj = estabelecimento_categoria.cnpj WHERE estabelecimento_categoria.cnpj = '$this->cnpj';";
+      $result = mysqli_query($conn,$query);
+      Connection::closeConnection($conn);
+      while($row = mysqli_fetch_assoc($result)){
+          $this->categoria[] = $row['nome'];
+      }
+    }
   }

@@ -16,7 +16,7 @@
         $this->campo_pesquisado = $campo;
       }
       public function setValorCampo($valor){ /*123123123123 ou 'Mec Dolands' ou 'Restaurante da dona Maria' e etc*/
-        $this->valor = $valor;
+        $this->valor_campo = $valor;
       }
       public function getCampoPesquisado(){
         return $this->campo_pesquisado;
