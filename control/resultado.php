@@ -52,7 +52,14 @@ tr:nth-child(even) {
     function desativar(cnpj){
       var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
       if (r) {
-          alert("Stub de apagar");
+         $.ajax({
+          url: '../control/apagar.php',
+          type: "POST",
+          data: {cnpj:cnpj},
+          success: function (result) {
+          // you will get response from your php page (what you echo or print)
+          }
+        });
       }
     }
     </script>
