@@ -26,7 +26,7 @@
           <a class="btn btn-primary botao_personalizado center-block" href="view/cadastro_estabelecimento.php"><b>I</b>nserir</a>
         </div>
         <div class="col-md-6">
-          <a class="btn btn-primary botao_personalizado center-block" href="https://www.google.com.br">Consultar</a>
+          <a class="btn btn-primary botao_personalizado center-block" href="view/consulta.php">Consultar</a>
         </div>
       </div>
     </div>
