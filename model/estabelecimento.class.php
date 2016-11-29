@@ -145,16 +145,19 @@
       // Inserindo os responsaveis do estabelecimento com fk:
       if(!empty($this->responsavel)){
         foreach ($this->responsavel as $r) {
-            $result = mysqli_query($conn, "INSERT INTO `responsavel`(`cpf`, `nome`, `telefone`, `cnpj`) VALUES ('$r->cpf', '$r->nome', '$r->telefone', '$this->getCnpj()');");
+          file_put_contents("classe_estabelecimento_vamover.txt", $r->getNome()."\t".$r->getcpf()."\n", FILE_APPEND);
+          $result = mysqli_query($conn, "INSERT INTO `responsavel`(`cpf`, `nome`, `telefone`, `cnpj`) VALUES ('".$r->getCpf()."', '".$r->getNome()."', '".$r->getTelefone()."', '".$this->getCnpj()."');");
           if(!$result){
             Connection::closeConnection($conn);
             return 0;
           }
         }
-      }
-      Connection::closeConnection($conn);
-      return 1;
+      }else{
+        Connection::closeConnection($conn);
+        return 0;
 
+      }
+      return 1;
     }
     private function salvarHorario(){
       //Inserindo o horário de funcionamento
