@@ -31,7 +31,7 @@ tr:nth-child(even) {
         <th>Ação</th>
       </tr>
       <tr>
-        <td class="cnpj-mask" id='cnpj_1'>95078178000161</td>
+        <td class="cnpj-mask" id='cnpj_1'>95446425000135</td>
         <td> Méc Dolands</td>
         <td> Restaurante da Dona Maria LTDA </td>
         <td> 8 </td>
@@ -52,7 +52,14 @@ tr:nth-child(even) {
     function desativar(cnpj){
       var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
       if (r) {
-          alert("Stub de apagar");
+         $.ajax({
+          url: '../control/apagar.php',
+          type: "POST",
+          data: {cnpj:cnpj},
+          success: function (result) {
+          // you will get response from your php page (what you echo or print)
+          }
+        });
       }
     }
     </script>

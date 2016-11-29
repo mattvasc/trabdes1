@@ -26,15 +26,7 @@
           <a class="btn btn-primary botao_personalizado center-block" href="view/cadastro_estabelecimento.php"><b>I</b>nserir</a>
         </div>
         <div class="col-md-6">
-          <a class="btn btn-primary botao_personalizado center-block" href="https://www.google.com.br"><b>A</b>lterar</a>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <a class="btn btn-primary botao_personalizado center-block" href="https://www.facebook.com"><b>D</b>esativar</a>
-        </div>
-        <div class="col-md-6">
-          <a class="btn btn-primary botao_personalizado center-block" href="https://www.youtube.com"><b>R</b>elatório</a>
+          <a class="btn btn-primary botao_personalizado center-block" href="view/consulta.php">Consultar</a>
         </div>
       </div>
     </div>

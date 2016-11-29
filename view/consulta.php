@@ -19,7 +19,7 @@
 
         <!-- You only need this form and the form-validation.css -->
 
-        <form class="form-validation" id="myform" method="post" action="..\control\busca.php">
+        <form class="form-validation" id="myform" method="post" action="../control/busca.php">
 
 
             <div class="form-title-row">
@@ -29,22 +29,21 @@
 
                 <label>
                     <span>Pesquisar por:</span>
-                    <select name="tipo" id="tipo">
+                    <select name="tipo" id="tipo" onchange="mudou()">
+												<option value="">Selecione</option>
 												<option value="cnpj">CNPJ</option>
-												<option value="fantasia">Nome Fantasia</option>
-												<option value="razao">Razao Social</option>
+												<option value="nome_fantasia">Nome Fantasia</option>
+												<option value="razao_social">Razao Social</option>
                         <option value="local">Local</option>
                         <option value="categoria">Categoria</option>
                         <option value="horario">Horario de Funcionamento</option>
                     </select>
-                </label>
+                </label> <br> <br>
+								<input type="hidden" name="consulta_dado" id="consulta_dado" >
+								<div id='coisa' >
+								</div>
 
-
-            <form method="GET" action="busca.php">
-  <label for="consulta">Buscar:</label>
-  <input type="text" id="consulta" name="consulta" maxlength="255" />
-
-	<button type="submit" name="rank" value="${rank}">buscar</button>
+								<button type="button" name="rank" onclick="validar()">buscar</button>
 
 
 </form>
@@ -54,7 +53,243 @@
 </tbody>
 
 		<footer>
+				<script>
+				function validar(){
+					var tipo = document.getElementById('tipo').value;
+					if(tipo == "cnpj"){
+						if(validar_cnpj()){
+							document.getElementById('consulta_dado').value = $('#cnpj').cleanVal();
+							// document.getElementById('myform').submit();
+							alert("salvando!");
+						}
+					}
+					else if(tipo == "nome_fantasia" || tipo == "razao_social"){
+							if(validar_string('campo')){
+								var invisivel = document.getElementById('consulta_dado');
+								var campox = document.getElementById('campo')
+								invisivel.value = campox.value;
+								// document.getElementById('myform').submit();
+								alert("salvando!");
 
+							}
+					}
+					else if(tipo == "local"){
+						if(validar_combobox(0) && validar_combobox(1))
+							alert("salvando!");
+						else {
+							alert("Selecione todos os combos!");
+						}
+
+					}
+					else if(tipo == "categoria"){
+
+					}
+					else if(tipo=="horario"){ //horario
+						if(validar_combobox(2))
+							alert("salvando!");
+						else {
+							alert("Selecione um horário!");
+						}
+					}
+					else{
+
+					}
+
+				}
+
+					function mudou(){
+						var tipo = document.getElementById('tipo').value;
+						var div = document.getElementById('coisa');
+						if(tipo == "cnpj"){
+							div.innerHTML = '<label for="cnpj">CNPJ:</label>';
+							div.innerHTML+='	<input type="text" id="cnpj" name="consulta" maxlength="255" />';
+							$('#cnpj').mask('00.000.000/0000-00', {reverse: false});
+
+						}
+						else if(tipo == "nome_fantasia"){
+							div.innerHTML = '<label for="consulta">Nome Fantasia:</label>';
+							div.innerHTML+='	<input type="text" id="campo" name="consulta" maxlength="255" />';
+						}
+						else if(tipo == "razao_social"){
+							div.innerHTML = '<label for="consulta">Razão Social:</label>';
+							div.innerHTML+='	<input type="text" id="campo" name="consulta" maxlength="255" />';
+						}
+						else if(tipo == "local"){
+							div.innerHTML = '<label for="setor">Setor:</label>';
+							div.innerHTML+='	<select name="setor" id="setor" onchange="SubSetorizar()"><option value="">Selecione</option>	</select>';
+							div.innerHTML+=' <br><br>';
+							div.innerHTML += '<label for="setor">Subsetor:</label>';
+							div.innerHTML+='	<select name="subsetor" id="subsetor"> <option value="">Selecione</option></select><br>';
+							var select = document.getElementById('setor');
+							var option;
+							$.ajax({
+								url: '../control/ajax_setor.php',
+								type: "POST",
+								data: { frase: 'oi' },
+								success: function (result) {
+									result = JSON.parse(result);
+									for (var x = 0; x < result.length; x++) {
+										option = document.createElement('option');
+										option.text = option.value = result[x];
+										select.add(option, select.length);
+									}
+								}
+						});
+
+
+						}
+
+						else if(tipo == "categoria"){
+							div.innerHTML = '<input type="checkbox" name="gambiarra" id="gambiarra" value="" style="display:none">';
+							$.ajax({
+								url: '../control/ajax_categoria.php',
+								type: "POST",
+								data: { frase: 'oi' },
+								success: function (result) {
+									result = JSON.parse(result);
+									for (var x = 0; x < result.length; x++) {
+										div.innerHTML+= '<label><input type ="checkbox" name="chkBx[]" value ="'+result[x]+'" id="'+ result[x] +'">'+result[x]+'</label><br>';
+									}
+								}
+						});
+
+						}
+						else if(tipo=="horario"){ //horario
+							div.innerHTML="";
+
+						}
+						else
+							div.innerHTML="";
+					}
+
+						$(document).ready(function(){
+								mudou();
+						});
+
+						function SubSetorizar() {
+							var select = document.getElementById("subsetor");
+							var option;
+
+							while (select.length > 1) {
+								select.remove(select.length-1);
+							}
+
+							$.ajax({
+				        url: '../control/setor.php',
+				        type: "POST",
+				        data: { Setor: $('#setor').val() },
+				        // dataType: 'application/json; charset=utf-8',
+				        success: function (result) {
+									result = JSON.parse(result);
+
+										//alert(data);
+				            for (var x = 0; x < result.length; x++) {
+											//alert(result[x]);
+											option = document.createElement('option');
+							        option.text = option.value = result[x];
+							        select.add(option, select.length);
+										}
+				        }
+				    });
+						}
+
+						function validar_cnpj()
+						{
+							var cnpj = $('#cnpj').cleanVal();
+							if(cnpj.length == 0){
+								alert("CNPJ Obrigatório");
+								return 0;
+							}
+							if(cnpj.length!=14){
+								alert("CNPJ Incompleto");
+								return 0;
+							}
+							var resto;
+							var primeiro_digito;
+							var segundo_digito;
+							var somatorio = 0;
+							somatorio+= 5 * parseInt(cnpj[0]);
+							somatorio+= 4 * parseInt(cnpj[1]);
+							somatorio+= 3 * parseInt(cnpj[2]);
+							somatorio+= 2 * parseInt(cnpj[3]);
+							somatorio+= 9 * parseInt(cnpj[4]);
+							somatorio+= 8 * parseInt(cnpj[5]);
+							somatorio+= 7 * parseInt(cnpj[6]);
+							somatorio+= 6 * parseInt(cnpj[7]);
+							somatorio+= 5 * parseInt(cnpj[8]);
+							somatorio+= 4 * parseInt(cnpj[9]);
+							somatorio+= 3 * parseInt(cnpj[10]);
+							somatorio+= 2 * parseInt(cnpj[11]);
+							resto = somatorio%11;
+							if(resto<2)
+								primeiro_digito = 0;
+							else
+								primeiro_digito = 11-resto;
+							if(parseInt(cnpj[12])!=primeiro_digito){
+								alert('Informe um CNPJ Válido!');
+								return 0;
+							}
+							somatorio = 0;
+							somatorio += 6 * parseInt(cnpj[0]);
+							somatorio += 5 * parseInt(cnpj[1]);
+							somatorio += 4 * parseInt(cnpj[2]);
+							somatorio += 3 * parseInt(cnpj[3]);
+							somatorio += 2 * parseInt(cnpj[4]);
+							somatorio += 9 * parseInt(cnpj[5]);
+							somatorio += 8 * parseInt(cnpj[6]);
+							somatorio += 7 * parseInt(cnpj[7]);
+							somatorio += 6 * parseInt(cnpj[8]);
+							somatorio += 5 * parseInt(cnpj[9]);
+							somatorio += 4 * parseInt(cnpj[10]);
+							somatorio += 3 * parseInt(cnpj[11]);
+							somatorio += 2 * parseInt(cnpj[12]);
+							resto = somatorio%11;
+							if(resto<2)
+								segundo_digito = 0;
+							else
+								segundo_digito = 11-resto;
+							if(parseInt(cnpj[13])!=segundo_digito){
+							alert('Informe um CNPJ Válido!');
+								return 0;
+							}
+							return 1;
+						};
+
+						function validar_string(id)
+						{
+								var str4 = document.getElementById(id).value;
+								if(str4.length>3)
+								{
+									return 1;
+								}
+								else if(str4.length==0)
+								{
+										alert('Campo Obrigatório!');
+										return 0;
+								}
+								else
+								{
+									alert('Valor muito curto!');
+										return 0;
+								}
+						}
+
+						function validar_combobox(combobox){
+								var selecionado; var classe;
+								if(combobox==0){
+								 	selecionado = $("#setor").val();
+								}
+								else if(combobox==1){
+									selecionado = $('#subsetor').val();
+								}
+								else if(combobox==2){
+									selecionado = $('#horario').val();
+								}
+								if(selecionado)
+									return 1;
+								return 0;
+						}
+				</script>
 
 		</footer>
 </body>

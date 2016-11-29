@@ -256,7 +256,7 @@
     }
     public function carregarLocal(){
       $conn = Connection::open();
-      $query = "SELECT * FROM `estabelecimento_local` WHERE (data_fim IS NULL OR data_fim < CURDATE()) AND cnpj = '$this->cnpj';";
+      $query = "SELECT * FROM `estabelecimento_local` WHERE cnpj = '$this->cnpj';";
       $result = mysqli_query($conn,$query);
       Connection::closeConnection($conn);
       if($row = mysqli_fetch_assoc($result)){

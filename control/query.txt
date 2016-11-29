@@ -1,0 +1,1 @@
+SELECT local.subsetor FROM `local` LEFT JOIN `estabelecimento_local` ON local.setor=estabelecimento_local.setor AND local.subsetor = estabelecimento_local.subsetor WHERE  local.setor = 'Terminal 5' AND(estabelecimento_local.cnpj IS NULL OR estabelecimento_local.data_fim < CURDATE()) ORDER BY local.subsetor
