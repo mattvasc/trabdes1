@@ -139,7 +139,7 @@
       return 1;
 
     }
-    private function salvarResponsavel(){
+    public function salvarResponsavel(){
       require_once('../control/Connection.php');
       $conn = Connection::open();
       // Inserindo os responsaveis do estabelecimento com fk:
@@ -239,6 +239,28 @@
       Connection::closeConnection($conn);
       while($row = mysqli_fetch_assoc($result)){
           $this->categoria[] = $row['nome'];
+      }
+    }
+    public function carregarHorario(){
+      $conn = Connection::open();
+      $query = "SELECT estabelecimento_horario.horario_inicio, estabelecimento_horario.horario_fim FROM `estabelecimento` INNER JOIN estabelecimento_horario ON estabelecimento.cnpj = estabelecimento_horario.cnpj WHERE estabelecimento_horario.cnpj = '$this->cnpj';";
+      $result = mysqli_query($conn,$query);
+      Connection::closeConnection($conn);
+      if($row = mysqli_fetch_assoc($result)){
+        $this->horario_inicio = $row['horario_inicio'];
+        $this->horario_fim = $row['horario_fim'];
+      }
+    }
+    public function carregarLocal(){
+      $conn = Connection::open();
+      $query = "SELECT * FROM `estabelecimento_local` WHERE (data_fim IS NULL OR data_fim < CURDATE()) AND cnpj = '$this->cnpj';";
+      $result = mysqli_query($conn,$query);
+      Connection::closeConnection($conn);
+      if($row = mysqli_fetch_assoc($result)){
+          $this->data_inicio = $row['data_inicio'];
+          $this->data_fim = $row['data_fim'];
+          $this->setor = $row['setor'];
+          $this->subsetor = $row['subsetor'];
       }
     }
   }
