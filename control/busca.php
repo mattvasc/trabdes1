@@ -43,8 +43,9 @@
                   while(count($arrayteste)>$i){
 
                           $consulta= $arrayteste[$i];
-                          $query = "SELECT * FROM `estabelecimento`, `responsavel`,`estabelecimento_horario`,`estabelecimento_local`WHERE (`estabelecimento`.`cnpj` = $consulta AND `responsavel`.`cnpj` = $consulta AND `estabelecimento_horario`.`cnpj` = $consulta AND `estabelecimento_local`.`cnpj` = $consulta AND `responsavel`.`cnpj` = $consulta AND `responsavel`.`cnpj` = $consulta) ";
+                          echo $query = "SELECT * FROM `estabelecimento`, `responsavel`,`estabelecimento_horario`,`estabelecimento_local`WHERE (`estabelecimento`.`cnpj` = $consulta AND `responsavel`.`cnpj` = $consulta AND `estabelecimento_horario`.`cnpj` = $consulta AND `estabelecimento_local`.`cnpj` = '$consulta' AND `responsavel`.`cnpj` = '$consulta' AND `responsavel`.`cnpj` = '$consulta') ";
                           $teste = mysqli_query($conn, $query);
+                          if($teste){
                           $resultadoQuery = mysqli_fetch_array($teste);
 
                           $estabelecimento = new Estabelecimento();
@@ -63,7 +64,7 @@
 
                           $resultado_final->addEstabelecimento($estabelecimento);
                           $i++;
-
+                        }
                   }
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
                   $resultado_final->setValorCampo($_POST["consulta"]);
@@ -84,7 +85,7 @@
 ?>
 
 <script type="text/Javascript">
-  window.location.href = 'resultado.php';
+  // window.location.href = '../view/resultado.php';
 </script> -->
 
 
