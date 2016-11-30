@@ -1,30 +1,35 @@
 <?php
 // Verifica se foi feita alguma busca
 // Caso contrario, redireciona o visitante pra home
-// if (!isset($_POST['consulta'])) {
-//   header("Location: /");
-//   exit;
-// }
+if (empty($_POST) || !isset($_POST['tipo'])) {
+  ?>
+    <html><script type="text/javascript">window.location.href="../index.php";</script></html>
+  <?php
+}
       require_once("../model/resultado.class.php");
       require_once("../model/estabelecimento.class.php");
       require_once('Connection.php');
 
 
-      $consulta = $_POST["consulta"];
+      $consulta = $_POST["consulta_dado"];
       $conn = Connection::open();
       $resultado_final = new Resultado();
 
         // descobre o cnpj, se nao for o item da busca
-      if ($_POST["tipo"]=="fantasia") {
-           $query = " SELECT * FROM `estabelecimento` WHERE (`nome_fantasia` LIKE '$consulta') ";
+      if ($_POST["tipo"]=="nome_fantasia") {
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` LIKE '$consulta'); ";
       }elseif ($_POST["tipo"]=="cnpj") {
-           $query = " SELECT * FROM `estabelecimento` WHERE (`cnpj` = $consulta) ";
-      }elseif ($_POST["tipo"]=="razao") {
-           $query = " SELECT * FROM `estabelecimento` WHERE (`razao_social` LIKE '$consulta') ";
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`cnpj` = $consulta); ";
+      }elseif ($_POST["tipo"]=="razao_social") {
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` LIKE '$consulta'); ";
       }elseif ($_POST["tipo"]=="categoria") {
-           $query = " SELECT * FROM `estabelecimento_categoria` WHERE (`nome` LIKE '$consulta') ";
+           $query = " SELECT `cnpj` FROM `estabelecimento_categoria` WHERE (`nome` LIKE '$consulta'); ";
       }elseif ($_POST["tipo"]=="local") {
-           $query = " SELECT * FROM `estabelecimento_local` WHERE (`setor` LIKE '$consulta') ";
+            $temp_array = explode(',',$consulta);
+           $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` LIKE '"+$temp_array[0]+"') AND (`subsetor` LIKE '"+$temp_array[1]+"');";
+      }elseif ($_POST["tipo"]=="horario") {
+          $temp_array = explode(',',$consulta);
+           $query = " SELECT `cnpj` FROM `estabelecimento_horario` WHERE (`horario_inicio` = '"+$temp_array[0]+"') AND (`horario_fim` = '"+$temp_array[1]+"'); ";
       }
 
 
@@ -35,46 +40,14 @@
                   $consulta = $row['cnpj'];
                   $arrayteste = array($row['cnpj']);
                   while($row = mysqli_fetch_array($result)){
-                          $arrayteste[] = $row['cnpj'];
+                      $estabelecimento = new Estabelecimento($row['cnpj']);
+                      $resultado_final->addEstabelecimento($estabelecimento);
+
                     }
                     mysqli_free_result($result);
 
-                  $i=0;
-                  while(count($arrayteste)>$i){
-
-                          $consulta= $arrayteste[$i];
-                          echo $query = "SELECT * FROM `estabelecimento`, `responsavel`,`estabelecimento_horario`,`estabelecimento_local`WHERE (`estabelecimento`.`cnpj` = $consulta AND `responsavel`.`cnpj` = $consulta AND `estabelecimento_horario`.`cnpj` = $consulta AND `estabelecimento_local`.`cnpj` = '$consulta' AND `responsavel`.`cnpj` = '$consulta' AND `responsavel`.`cnpj` = '$consulta') ";
-                          $teste = mysqli_query($conn, $query);
-                          if($teste){
-                          $resultadoQuery = mysqli_fetch_array($teste);
-
-                          $estabelecimento = new Estabelecimento();
-                          $estabelecimento->setTelefone($resultadoQuery['telefone']);
-                          $estabelecimento->setCnpj($resultadoQuery['cnpj']);
-                          $estabelecimento->setNomeFantasia($resultadoQuery['nome_fantasia']);
-                          $estabelecimento->setRazaoSocial($resultadoQuery['razao_social']);
-                          $estabelecimento->setSite($resultadoQuery['site']);
-                          $estabelecimento->setSetor($resultadoQuery['setor']);
-                          $estabelecimento->setSubsetor($resultadoQuery['subsetor']);
-                          $estabelecimento->setDataInicio($resultadoQuery['data_inicio']);
-                          $estabelecimento->setDataFim($resultadoQuery['data_fim']);
-                          $estabelecimento->sethorarioInicio($resultadoQuery['horario_inicio']);
-                          $estabelecimento->setHorarioFim($resultadoQuery['horario_fim']);
-                          $estabelecimento->setNFuncionario($resultadoQuery['n_funcionario']);
-
-                          $resultado_final->addEstabelecimento($estabelecimento);
-                          $i++;
-                        }
-                  }
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
-                  $resultado_final->setValorCampo($_POST["consulta"]);
-
-
-                  // echo "<br>";    echo "<br>";
-                  // echo "FINAL";
-                  // var_dump($resultado_final);
-                  // echo "<br>";    echo "<br>";
-                  // echo "<br>";    echo "<br>";
+                  $resultado_final->setValorCampo($_POST["consulta_dado"]);
 
                   file_put_contents('../model/resultado.temp', serialize($resultado_final));
 
@@ -83,12 +56,8 @@
             }
 
 ?>
-
-<script type="text/Javascript">
-  // window.location.href = '../view/resultado.php';
-</script> -->
-
-
-<!--<script type="text/Javascript">
-  window.location.href = 'resultado.php';
-</script> -->
+<html>
+  <script type="text/Javascript">
+     window.location.href = '../view/resultado.php';
+  </script>
+</html>

@@ -8,4 +8,6 @@
       $horario[] = $row['horario_inicio'].','.$row['horario_fim'];
   }
   Connection::closeConnection($conn);
+  echo json_encode($horario);
+
 ?>
