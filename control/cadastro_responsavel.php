@@ -1,25 +1,21 @@
 <?php
-if(!empty($_POST) && isset($_SESSION['estabelecimento']))
+if(!empty($_POST))
 {
   require_once("../model/responsavel.class.php");
-  if(isset($_POST['cpf_sem_mascara'], $_POST['nome'], $_POST['telefone'], $_POST['acao'])){
+  if(isset($_POST['cpf'], $_POST['nome'], $_POST['telefone'])){
     $responsavel = new Responsavel($_POST['cpf'], $_POST['nome'], $_POST['telefone']);
-    if(isset($_POST['email']) && !empty($_POST['email']))
+    if(isset($_POST['email']))
       $responsavel->setEmail($_POST['email']);
+    $estabelecimento->addResponsavel($responsavel);
 
-    //$responsavel->salvar();
-    $_POST['estabelecimento']->addResponsavel($responsavel);
-    if($_POST['acao'] == 'salvar'){
-      unlink('../model/estabelecimento.temp');
-      /*salvar responsáveis*/
-      $_POST['estabelecimento']->salvarResponsavel();
-      ?>
-      <script>
-        alert("Salvo com sucesso!");
-      </script>
-      <?php
-    }
+      if($estabelecimento->salvarResponsavel($responsavel)){
+        ?>
+        <script>
+        window.location.href="#";
+        </script>
+        <?php
+      }
   }else{
     echo "Houve um erro ao requesitar sua solicitação! Revise todos os campos e tente novamente.";
   }
-?>
+}?>

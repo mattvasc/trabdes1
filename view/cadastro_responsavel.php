@@ -38,7 +38,7 @@
     </header>
     <div class="main-content" id = "teste">
 
-        <form class="form-validation" method="post" action="#">
+        <form class="form-validation" method="post" id="form_responsavel" action="#">
             <div class="form-title-row">
                 <h1>Cadastro de Responsável por estabelecimento: </h1>
             </div>
@@ -47,7 +47,7 @@
                 <div class="form-row form-input-nome_responsavel-row">
                     <label>
                         <span>Nome completo:</span>
-                        <input type="text" id="nome" name="nome[]" onblur="validar_nome('nome')">
+                        <input type="text" id="nome" name="nome" onblur="validar_nome('nome')">
                     </label>
                     <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                     <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
@@ -57,7 +57,7 @@
                 <label>
                     <span>CPF:</span>
                     <input type="text" id="cpf" onblur="verificar_cpf()">
-                    <input type="hidden" id="cpf_sem_mascara" name="cpf[]">
+                    <input type="hidden" id="cpf_sem_mascara" name="cpf">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
@@ -67,7 +67,7 @@
                 <label>
                     <span>Telefone:</span>
                     <input type="tel" id="telefone" onblur="validar_telefone()">
-                    <input type="hidden" name="telefone[]" id="telefone_sem_mascara">
+                    <input type="hidden" name="telefone" id="telefone_sem_mascara">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
@@ -76,7 +76,7 @@
             <div class="form row form-input-email-row">
                 <label>
                     <span>E-mail:</span>
-                    <input type="email" id="email" name="email[]" onblur="validar_email('email')">
+                    <input type="email" id="email" name="email">
                 </label>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-sign"><i class="fa fa-close"></i></span>
@@ -84,37 +84,36 @@
             </div><br><br>
         </div>
             </fieldset>
-            <div class="form-row form-input-submit">
-                <button type="button" onclick="validar('salvar')">Salvar</button>
+            <div class = "row">
+            <div class="col-md-3 form-input-submit">
+                <button type="button" onclick="validar()">Salvar</button>
                 <span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
                 <span class="form-invalid-data-info"></span>
             </div>
-            <div class="form-row form-add-resp">
-                <button type="button" onclick="validar('responsavel')">Responsável++</button>
-                <input type="hidden" name="acao" id="name"> </input>
+            <div class="col-md-3 form-input-submit">
+                <button type="button" onclick="retornar()">Concluído</button>
             </div>
-        </form>
+        </div>
+      </form>
+
     </div>
 
 
 <footer>
     <script>
+function retornar(){
+    window.location.href="../index.php";
+}
 
-function validar(quem){
+function validar(){
 var resposta = true;
 resposta = verificar_cpf() && resposta;
 resposta = validar_nome('nome') && resposta;
-resposta = validar_email('email') && resposta;
 resposta = validar_telefone() && resposta;
 
 $('.form-input-submit').removeClass('form-invalid-data');
 $('.form-input-submit').removeClass('form-valid-data');
 if(resposta){
-    if(quem == 'responsavel')
-        document.getElementById("acao").value = 'responsavel';
-    else if(quem == 'salvar')
-        document.getElementById("acao").value = 'salvar';
-
     document.getElementById("cpf_sem_mascara").value = $('#cpf').cleanVal();
     document.getElementById("telefone_sem_mascara").value = $('#telefone').cleanVal();
     document.getElementById("form_responsavel").submit();
@@ -137,7 +136,7 @@ function validar_telefone(){
         return true;
 }
 function validar_nome(nome){
-    var patternValidaNome = "^([a-zA-Z]{2,}\\s[a-zA-z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?";
+    var patternValidaNome = /^[a-zA-Z\s]*$/;;
 
     var campo = $('.form-input-nome_responsavel-row');
     campo.removeClass('form-invalid-data');
@@ -147,13 +146,15 @@ function validar_nome(nome){
         campo.addClass('form-invalid-data');
         campo.find('.form-invalid-data-info').text('Campo Obrigatório!');
         return 0;
-    }else if(nome.length < 10){
+    }else if(nome.length < 6){
         campo.addClass('form-invalid-data');
         campo.find('.form-invalid-data-info').text('Valor muito curto!');
         return 0;
     }
-    if(patternValidaNome.test(nome))
+    if(patternValidaNome.test(nome)){
         return 1;
+        //alert(patternValidaNome.test(nome));
+    }
     else{
         campo.addClass('form-invalid-data');
         campo.find('.form-invalid-data-info').text('Nome inválido!');
@@ -161,31 +162,9 @@ function validar_nome(nome){
     }
 }
 
-function validar_email(field){/*
-usuario = field.value.substring(0, field.value.indexOf("@"));
-dominio = field.value.substring(field.value.indexOf("@")+ 1, field.value.length);
-
-if ((usuario.length >= 1) &&
-    (dominio.length >= 3) &&
-    (usuario.search("@") == -1) &&
-    (dominio.search("@") == -1) &&
-    (usuario.search(" ") == -1) &&
-    (dominio.search(" ") == -1) &&
-    (dominio.search(".") != -1) &&
-    (dominio.indexOf(".") >= 1)&&
-    (dominio.lastIndexOf(".") < dominio.length - 1)) {
-        field.addClass('form-valid-data');
-        return 1;
-}else{
-    field.addClass('form-invalid-data');
-    field.find('.form-invalid-data-info').text('E-mail inválido!');
-    return 0;
-}*/
-return 1;
-}
-
 function verificar_cpf(){
     var cpf = $('#cpf').cleanVal();
+    document.getElementById('cpf_sem_mascara').value = cpf;
     var campo = $('.form-input-cpf_responsavel-row');
     campo.removeClass('form-invalid-data');
     campo.removeClass('form-valid-data');
@@ -254,11 +233,11 @@ function verificar_cpf(){
     }
 
 }
-function verificar_existencia_cpf(){/*
+function verificar_existencia_cpf(){
     return $.ajax({
         url:'..control/verificar_existencia_cpf.php',
         type: "POST",
-        data: {cpf: $('#cpf').cleanVal(), cnpj: $('#cnpj').cleanVal() },
+        data: {cpf: $('#cpf').cleanVal(), cnpj: "<?php echo $estabelecimento->getCnpj(); ?>"},
         success: function(result){
             result = JSON.parse(result);
             if(result == '1'){
@@ -271,8 +250,7 @@ function verificar_existencia_cpf(){/*
                 return 1;
         }
 
-    });*/
-    return 1;
+    });
 };
 
 
@@ -286,6 +264,9 @@ function verificar_existencia_cpf(){/*
     });
 
     </script>
+    <?php
+         require_once('../control/cadastro_responsavel.php');
+    ?>
 </footer>
 
 </body>
