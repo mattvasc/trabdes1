@@ -39,13 +39,16 @@ tr:nth-child(even) {
           echo 'Horário de Funcionamento: '.$resultado->getValorCampo();
         break;
         case 'local':
-          echo 'Local';
+          echo 'Local: '.$resultado->getValorCampo();
         break;
         case 'razao_social':
-          echo 'Razão Social';
+          echo 'Razão Social: '.$resultado->getValorCampo();
         break;
         case 'cnpj':
           echo 'CNPJ: ' . $resultado->getValorCampo();
+        break;
+        case 'categoria':
+          echo 'Categorias: ' . $resultado->getValorCampo();
         break;
       default:
         echo "alguma coisa não cadastrada no switch";
@@ -66,6 +69,9 @@ tr:nth-child(even) {
         <th>Nº Func.</th>
         <th>Ação</th>
       </tr>
+
+      <?php
+      /*
       <tr>
         <td class="cnpj-mask" id='cnpj_1'>95446425000135</td>
         <td> Méc Dolands</td>
@@ -73,20 +79,22 @@ tr:nth-child(even) {
         <td> 8 </td>
         <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_1').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
       </tr>
-      <?php
+      */
           $temp = $resultado->getEstabelecimento();
           // file_put_contents("resultado_busca.txt",print_r($temp));
+          $count = 0;
           foreach($temp as $t){
             $t->carregar();
             ?>
             <tr>
-              <td class="cnpj-mask" id='cnpj_1'><?php echo $t->getCnpj(); ?></td>
+              <td class="cnpj-mask" id='cnpj_<?php echo $count;?>'><?php echo $t->getCnpj(); ?></td>
               <td> <?php echo $t->getNomeFantasia(); ?></td>
               <td> <?php echo $t->getRazaoSocial();?></td>
               <td> <?php echo $t->getNFuncionario();?> </td>
-              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_1').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
+              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
             </tr>
             <?
+            $count++;
           }
       ?>
     </table>

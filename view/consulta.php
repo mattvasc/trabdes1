@@ -91,13 +91,6 @@
 							alert("Selecione ao menos uma Cateoria!");
 						}
 						else{
-							var c;
-								for(c=0;c< getArrVal.length; c++)
-									if(c==0)
-										document.getElementById('consulta_dado').value = getArrVal[0];
-									else
-										document.getElementById('consulta_dado').value += ","+getArrVal[0];
-								alert(document.getElementById('consulta_dado').value);
 								document.getElementById('myform').submit();
 						}
 					}

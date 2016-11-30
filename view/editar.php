@@ -171,7 +171,7 @@
 
             <div class="form-row form-input-submit">
 
-                <button type="button" onclick="validar()">Próximo</button>
+                <button type="button" onclick="validar()">Salvar</button>
 								<span class="form-valid-data-sign"><i class="fa fa-check"></i></span>
 		            <span class="form-invalid-data-info"></span>
             </div>
@@ -436,7 +436,7 @@
 					var SPMaskBehavior = function (val) {return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';	},spOptions = {onKeyPress: function(val, e, field, options) {field.mask(SPMaskBehavior.apply({}, arguments), options);}};
 				//	$('#cnpj').mask('00.000.000/0000-00', {reverse: false;});
 					$('#telefone').mask(SPMaskBehavior, spOptions);
-				
+
 					$('#n_funcionario').mask('00000');
 					$('input[type="checkbox"][name="chkBx[]"]').change(function(){
 						if (this.checked) {
