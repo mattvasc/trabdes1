@@ -3,18 +3,22 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 25, 2016 at 03:10 AM
+-- Generation Time: Nov 30, 2016 at 04:52 
 -- Server version: 10.1.16-MariaDB
--- PHP Version: 5.6.24
--- Criado pelo grupo mais lindo dessa UFSCar.
+-- PHP Version: 7.0.9
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "-03:00";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `2101_airlines_old`
+-- Database: `2101_airlines`
 --
-CREATE DATABASE IF NOT EXISTS `2101_airlines` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `2101_airlines`;
 
 -- --------------------------------------------------------
 
@@ -69,7 +73,8 @@ CREATE TABLE `estabelecimento` (
 
 INSERT INTO `estabelecimento` (`cnpj`, `nome_fantasia`, `razao_social`, `site`, `telefone`, `n_funcionario`) VALUES
 ('05147458000191', 'Bleriot', 'Giovanni e Flávia Restaurante Ltda', 'www.giovanniflavia.com.br', '1138517405', 12),
-('12487445000127', 'Méc Dolands', 'Restaurante da Dona Mária', 'www.oi.com.br', '2322222222', 0),
+('12487445000127', 'Méc Dolands', 'Restaurante da Dona Maria Serafina', 'www.oi.com.br', '2322222222', 0),
+('12654555000136', 'IntéMais', 'Doceria Até Mais', 'site.com', '1140553502', 0),
 ('58745612000193', 'BOB’S', 'Beatriz e Valentina Restaurante ME', 'www.bobs.com.br/', '1635557621', 25),
 ('95446425000135', 'CSW EXPRESS', 'Heloisa e Davi Transportes Ltda', 'http://www.csw.com.br', '1136141020', 5);
 
@@ -92,6 +97,7 @@ INSERT INTO `estabelecimento_categoria` (`cnpj`, `nome`) VALUES
 ('05147458000191', 'Bar'),
 ('12487445000127', 'Café'),
 ('12487445000127', 'Fast Food'),
+('12654555000136', 'Doces e Sorvetes'),
 ('58745612000193', 'Fast Food'),
 ('95446425000135', 'Transporte de Carga');
 
@@ -114,7 +120,8 @@ CREATE TABLE `estabelecimento_horario` (
 INSERT INTO `estabelecimento_horario` (`cnpj`, `horario_inicio`, `horario_fim`) VALUES
 ('05147458000191', '07:00:00', '23:00:00'),
 ('05147458000191', '10:00:00', '23:59:59'),
-('12487445000127', '00:00:00', '23:59:59'),
+('12487445000127', '07:00:00', '23:00:00'),
+('12654555000136', '00:00:00', '23:59:59'),
 ('58745612000193', '00:00:00', '23:59:59'),
 ('58745612000193', '07:00:00', '23:00:00'),
 ('58745612000193', '08:00:00', '18:00:00'),
@@ -139,10 +146,11 @@ CREATE TABLE `estabelecimento_local` (
 --
 
 INSERT INTO `estabelecimento_local` (`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES
-('05147458000191', 'Terminal 2', 'A', '2011-10-07', NULL),
-('12487445000127', 'Terminal 1', 'D', '2011-02-22', '2012-03-13'),
-('58745612000193', 'Terminal 3', 'C', '2015-04-13', NULL),
-('95446425000135', 'Terminal 5', 'H', '2013-10-21', NULL);
+('05147458000191', 'Terminal 2', 'Astromélia', '2011-10-07', NULL),
+('12487445000127', 'Terminal 1', 'Azul', '2011-02-22', '2012-03-13'),
+('12654555000136', 'Terminal 4', 'Manga', '2015-11-30', NULL),
+('58745612000193', 'Terminal 3', 'Macaco', '2015-04-13', NULL),
+('95446425000135', 'Terminal 5', 'lol', '2013-10-21', NULL);
 
 -- --------------------------------------------------------
 
@@ -185,13 +193,42 @@ CREATE TABLE `local` (
 --
 
 INSERT INTO `local` (`setor`, `subsetor`, `area`) VALUES
-('Terminal 1', 'D', 10),
-('Terminal 2', 'A', 25),
-('Terminal 3', 'A', 23),
-('Terminal 3', 'C', 20),
-('Terminal 4', 'E', 10),
-('Terminal 5', 'H', 30),
-('Terminal 5', 'I', 10);
+('Terminal 1', 'Amarelo', 5),
+('Terminal 1', 'Azul', 10),
+('Terminal 1', 'Branco', 5),
+('Terminal 1', 'Dourado', 25),
+('Terminal 1', 'Laranja', 10),
+('Terminal 1', 'Preto', 10),
+('Terminal 1', 'Roxo', 5),
+('Terminal 1', 'Verde', 15),
+('Terminal 2', 'Astromélia', 25),
+('Terminal 2', 'Cerejeira', 5),
+('Terminal 2', 'Cravo', 15),
+('Terminal 2', 'Delfim', 15),
+('Terminal 2', 'Gardinia', 10),
+('Terminal 2', 'Gloriosa', 30),
+('Terminal 3', 'Beagle', 15),
+('Terminal 3', 'Boxer', 10),
+('Terminal 3', 'Chow-Chow', 5),
+('Terminal 3', 'Labrador', 3),
+('Terminal 3', 'Macaco', 20),
+('Terminal 3', 'Pinscher', 23),
+('Terminal 3', 'Poodle', 10),
+('Terminal 3', 'Pug', 5),
+('Terminal 4', 'Abacate', 10),
+('Terminal 4', 'Abacaxi', 15),
+('Terminal 4', 'Banana', 25),
+('Terminal 4', 'Jaca', 10),
+('Terminal 4', 'Kiwi', 5),
+('Terminal 4', 'Manga', 10),
+('Terminal 4', 'Uva', 15),
+('Terminal 5', 'CS', 10),
+('Terminal 5', 'Dota', 10),
+('Terminal 5', 'lol', 30),
+('Terminal 5', 'Mario Bros', 5),
+('Terminal 5', 'Runscape', 15),
+('Terminal 5', 'Skyrim', 15),
+('Terminal 5', 'Tibia', 25);
 
 -- --------------------------------------------------------
 
@@ -213,10 +250,12 @@ CREATE TABLE `responsavel` (
 
 INSERT INTO `responsavel` (`cpf`, `nome`, `email`, `telefone`, `cnpj`) VALUES
 ('07183376460', 'João Andrade', 'joao@gmail.com', '1140565628', '58745612000193'),
+('26082353870', 'Daniel Bertoldi', 'danidani@teste.com', '1140524514', '12654555000136'),
 ('40707587846', 'Mateus Vasconcelos', 'mat.vou_te_hackeei@gmail.com', '11960815422', '05147458000191'),
 ('41915617820', 'Carla Gama', 'carla.gaama@gmail.com', '11981062589', '05147458000191'),
 ('52160806510', 'Maria Joaquina', 'mariazinha@gmail.com', '11987701467', '95446425000135'),
-('66786607730', 'Ingrid Santos', 'ingrid@gmail.com', '19997052044', '95446425000135');
+('66786607730', 'Ingrid Santos', 'ingrid@gmail.com', '19997052044', '95446425000135'),
+('94105356380', 'Sobrinha do Dono', 'joleana@gmail.com', '4540553502', '12654555000136');
 
 --
 -- Indexes for dumped tables
@@ -297,10 +336,14 @@ ALTER TABLE `estabelecimento_horario`
 --
 ALTER TABLE `estabelecimento_local`
   ADD CONSTRAINT `estabelecimento_local_ibfk_1` FOREIGN KEY (`cnpj`) REFERENCES `estabelecimento` (`cnpj`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `estabelecimento_local_ibfk_2` FOREIGN KEY (`setor`,`subsetor`) REFERENCES `local` (`setor`, `subsetor`);
+  ADD CONSTRAINT `estabelecimento_local_ibfk_2` FOREIGN KEY (`setor`,`subsetor`) REFERENCES `local` (`setor`, `subsetor`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `responsavel`
 --
 ALTER TABLE `responsavel`
   ADD CONSTRAINT `fk_cnpj` FOREIGN KEY (`cnpj`) REFERENCES `estabelecimento` (`cnpj`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
