@@ -26,29 +26,33 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
            $query = " SELECT `cnpj` FROM `estabelecimento_categoria` WHERE (`nome` LIKE '$consulta'); ";
       }elseif ($_POST["tipo"]=="local") {
             $temp_array = explode(',',$consulta);
-           $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` LIKE '"+$temp_array[0]+"') AND (`subsetor` LIKE '"+$temp_array[1]+"');";
+           $query = "SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` LIKE '".$temp_array[0]."') AND (`subsetor` LIKE '".$temp_array[1]."');";
       }elseif ($_POST["tipo"]=="horario") {
           $temp_array = explode(',',$consulta);
-           $query = " SELECT `cnpj` FROM `estabelecimento_horario` WHERE (`horario_inicio` = '"+$temp_array[0]+"') AND (`horario_fim` = '"+$temp_array[1]+"'); ";
+           $query = " SELECT `cnpj` FROM `estabelecimento_horario` WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."'); ";
       }
-
+      elseif ($_POST["tipo"]=="todos"){
+        $query = " SELECT `cnpj` FROM `estabelecimento`; ";
+      }
+        file_put_contents("query_rodada.txt","Query: ". $query, FILE_APPEND);
+        file_put_contents("query_rodada.txt","consulta_dado: ".$_POST["consulta_dado"], FILE_APPEND);
 
 
             $result = mysqli_query($conn, $query);
             if($result){
+                  $estabelecimento = array();
                   $row = mysqli_fetch_array($result);
                   $consulta = $row['cnpj'];
                   $arrayteste = array($row['cnpj']);
                   while($row = mysqli_fetch_array($result)){
-                      $estabelecimento = new Estabelecimento($row['cnpj']);
-                      $resultado_final->addEstabelecimento($estabelecimento);
-
+                      $estabelecimento[] = new Estabelecimento($row['cnpj']);
                     }
                     mysqli_free_result($result);
-
+                  $resultado_final->setEstabelecimento($estabelecimento);
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
-                  $resultado_final->setValorCampo($_POST["consulta_dado"]);
-
+                  $resultado_final->setValorCampo(serialize($_POST["consulta_dado"]));
+                  file_put_contents("query_rodada.txt","do OBJ: ".$_POST["consulta_dado"], FILE_APPEND);
+                  
                   file_put_contents('../model/resultado.temp', serialize($resultado_final));
 
                   Connection::closeConnection($conn);

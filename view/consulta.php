@@ -31,6 +31,7 @@
                     <span>Pesquisar por:</span>
                     <select name="tipo" id="tipo" onchange="mudou()">
 												<option value="">Selecione</option>
+												<option value="todos">Todos</option>
 												<option value="cnpj">CNPJ</option>
 												<option value="nome_fantasia">Nome Fantasia</option>
 												<option value="razao_social">Razao Social</option>
@@ -59,8 +60,7 @@
 					if(tipo == "cnpj"){
 						if(validar_cnpj()){
 							document.getElementById('consulta_dado').value = $('#cnpj').cleanVal();
-							// document.getElementById('myform').submit();
-							alert("salvando!");
+							document.getElementById('myform').submit();
 						}
 					}
 					else if(tipo == "nome_fantasia" || tipo == "razao_social"){
@@ -74,7 +74,7 @@
 					}
 					else if(tipo == "local"){
 						if(validar_combobox(0) && validar_combobox(1)){
-								document.getElementById('consulta_dado').value = document.getElementById('setor').value + ','+document.getElementById('subsetor').value
+								document.getElementById('consulta_dado').value = document.getElementById('setor').value + ','+document.getElementById('subsetor').value;
 								document.getElementById('myform').submit();
 						}
 
@@ -97,7 +97,7 @@
 										document.getElementById('consulta_dado').value = getArrVal[0];
 									else
 										document.getElementById('consulta_dado').value += ","+getArrVal[0];
-										
+								alert(document.getElementById('consulta_dado').value);
 								document.getElementById('myform').submit();
 						}
 					}
@@ -110,8 +110,8 @@
 							alert("Selecione um horário!");
 						}
 					}
-					else{
-						alert('Erro!');
+					else if(tipo=="todos"){
+						document.getElementById('myform').submit();
 					}
 
 				}
@@ -154,8 +154,6 @@
 									}
 								}
 						});
-
-
 						}
 
 						else if(tipo == "categoria"){
@@ -216,7 +214,7 @@
 							$.ajax({
 				        url: '../control/setor.php',
 				        type: "POST",
-				        data: { Setor: $('#setor').val() },
+				        data: { Setor: $('#setor').val(), busca_limpa: 0 },
 				        // dataType: 'application/json; charset=utf-8',
 				        success: function (result) {
 									result = JSON.parse(result);

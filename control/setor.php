@@ -2,7 +2,11 @@
   require_once('Connection.php');
   $conn = Connection::open();
   // $query = "SELECT `subsetor` FROM `local` WHERE setor = '" . $_POST['Setor'] . "' ORDER BY subsetor" ; << todos os susbetores
-  $query = "SELECT local.subsetor FROM `local` LEFT JOIN `estabelecimento_local` ON local.setor=estabelecimento_local.setor AND local.subsetor = estabelecimento_local.subsetor WHERE  local.setor = '". $_POST['Setor'] ."' AND(estabelecimento_local.cnpj IS NULL OR estabelecimento_local.data_fim < CURDATE()) ORDER BY local.subsetor";
+  if($_POST['busca_limpa'])
+    $query = "SELECT local.subsetor FROM `local` LEFT JOIN `estabelecimento_local` ON local.setor=estabelecimento_local.setor AND local.subsetor = estabelecimento_local.subsetor WHERE  local.setor = '". $_POST['Setor'] ."' AND(estabelecimento_local.cnpj IS NULL OR estabelecimento_local.data_fim < CURDATE()) ORDER BY local.subsetor";
+  else {
+    $query = "SELECT local.subsetor FROM `local` LEFT JOIN `estabelecimento_local` ON local.setor=estabelecimento_local.setor AND local.subsetor = estabelecimento_local.subsetor WHERE  local.setor = '". $_POST['Setor'] ."' ORDER BY local.subsetor;";
+  }
     if ($result = mysqli_query($conn, $query)) {
 
     $SubSetores = array();

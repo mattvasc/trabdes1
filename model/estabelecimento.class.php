@@ -216,6 +216,7 @@
     }
     public function carregar(){
       //Lógica necessária para selecionar
+      require_once('../control/Connection.php');
       $conn = Connection::open();
       $query = "SELECT * FROM `estabelecimento` WHERE `cnpj` = '$this->cnpj';";
       $result = mysqli_query($conn,$query);

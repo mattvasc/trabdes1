@@ -2,6 +2,11 @@
 
   if(file_exists('../model/resultado.temp'))
   {
+    require_once('../model/resultado.class.php');
+    require_once('../model/estabelecimento.class.php');
+
+    $resultado = file_get_contents('../model/resultado.temp');
+    $resultado = unserialize($resultado);
     // # Criando Tabela:
     ?><center>
     <style>
@@ -21,13 +26,44 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
-  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por CNPJ: <br> 123.XXX.XXX-XXXX-XX
+  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por
+  <?php
+    switch ($resultado->getCampoPesquisado()) {
+      case 'nome_fantasia':
+        echo 'Nome Fantasia: '.(string)$resultado->getValorCampo();
+        break;
+        case 'todos':
+          echo 'Todos os estabelecimento';
+        break;
+        case 'horario':
+          echo 'Horário de Funcionamento: '.$resultado->getValorCampo();
+        break;
+        case 'local':
+          echo 'Local';
+        break;
+        case 'razao_social':
+          echo 'Razão Social';
+        break;
+        case 'cnpj':
+          echo 'CNPJ: ' . $resultado->getValorCampo();
+        break;
+      default:
+        echo "alguma coisa não cadastrada no switch";
+      break;
+    };
+
+  ?>
+
+
+
+
+  <br>
     <table border="1">
       <tr>
         <th>CNPJ</th>
         <th>Nome Fantasia</th>
         <th>Razão Social</th>
-        <th>Nº Funcionários</th>
+        <th>Nº Func.</th>
         <th>Ação</th>
       </tr>
       <tr>
@@ -37,13 +73,22 @@ tr:nth-child(even) {
         <td> 8 </td>
         <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_1').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
       </tr>
-      <tr>
-        <td>123123123213</td>
-        <td>Smoke shop</td>
-        <td> Fumaça LTDA </td>
-        <td> 18 </td>
-        <td> <href style="cursor: pointer;"> Editar </href> | <href style="cursor: pointer;"> Desativar </href> | Funcionários </td>
-      </tr>
+      <?php
+          $temp = $resultado->getEstabelecimento();
+          // file_put_contents("resultado_busca.txt",print_r($temp));
+          foreach($temp as $t){
+            $t->carregar();
+            ?>
+            <tr>
+              <td class="cnpj-mask" id='cnpj_1'><?php echo $t->getCnpj(); ?></td>
+              <td> <?php echo $t->getNomeFantasia(); ?></td>
+              <td> <?php echo $t->getRazaoSocial();?></td>
+              <td> <?php echo $t->getNFuncionario();?> </td>
+              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_1').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
+            </tr>
+            <?
+          }
+      ?>
     </table>
     <script>
     $(document).ready(function(){
@@ -76,7 +121,7 @@ tr:nth-child(even) {
 
     }
     unlink('../model/resultato.temp');*/
-    rename("../model/resultado.temp","../model/resultado.temp.bkp");
+    // rename("../model/resultado.temp","../model/resultado.temp.bkp");
     // # Fechando Tabela
     ?>
     <br><br>

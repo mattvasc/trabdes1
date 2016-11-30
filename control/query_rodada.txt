@@ -1,0 +1,1 @@
+Query:  SELECT `cnpj` FROM `estabelecimento_categoria` WHERE (`nome` LIKE 'Banco,Banco,Banco'); consulta_dado: Banco,Banco,Bancodo OBJ: Banco,Banco,Banco

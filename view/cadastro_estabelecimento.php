@@ -485,7 +485,7 @@
 					$.ajax({
 		        url: '../control/setor.php',
 		        type: "POST",
-		        data: { Setor: $('#setor').val() },
+		        data: { Setor: $('#setor').val(),busca_limpa: 1 },
 		        // dataType: 'application/json; charset=utf-8',
 		        success: function (result) {
 							result = JSON.parse(result);
