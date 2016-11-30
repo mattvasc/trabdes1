@@ -85,6 +85,9 @@ tr:nth-child(even) {
           $count = 0;
           foreach($temp as $t){
             $t->carregar();
+            $t->carregarCategoria();
+            $t->carregarHorario();
+            $t->carregarLocal();
             ?>
             <tr>
               <td class="cnpj-mask" id='cnpj_<?php echo $count;?>'><?php echo $t->getCnpj(); ?></td>

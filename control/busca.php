@@ -17,11 +17,11 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
 
         // descobre o cnpj, se nao for o item da busca
       if ($_POST["tipo"]=="nome_fantasia") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` LIKE '$consulta'); ";
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` ILIKE '$consulta%'); ";
       }elseif ($_POST["tipo"]=="cnpj") {
            $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`cnpj` = $consulta); ";
       }elseif ($_POST["tipo"]=="razao_social") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` LIKE '$consulta'); ";
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` ILIKE '$consulta%'); ";
       }elseif ($_POST["tipo"]=="categoria") {
            $query = " SELECT `cnpj` FROM `estabelecimento_categoria` WHERE 0 ";
            $
@@ -42,6 +42,7 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
       elseif ($_POST["tipo"]=="todos"){
         $query = " SELECT `cnpj` FROM `estabelecimento`; ";
       }
+        unlink("query_rodada.txt");
         file_put_contents("query_rodada.txt","Query: ". $query, FILE_APPEND);
         file_put_contents("query_rodada.txt","consulta_dado: ".$consulta, FILE_APPEND);
 
@@ -49,9 +50,6 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
             $result = mysqli_query($conn, $query);
             if($result){
                   $estabelecimento = array();
-                  $row = mysqli_fetch_array($result);
-                  // $consulta = $row['cnpj'];
-                  // $arrayteste = array($row['cnpj']);
                   while($row = mysqli_fetch_array($result)){
                       $estabelecimento[] = new Estabelecimento($row['cnpj']);
                     }
@@ -60,7 +58,6 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
                   $resultado_final->setValorCampo($consulta);
                   file_put_contents("query_rodada.txt","do OBJ: ".$consulta, FILE_APPEND);
-
                   file_put_contents('../model/resultado.temp', serialize($resultado_final));
 
                   Connection::closeConnection($conn);
