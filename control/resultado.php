@@ -1,4 +1,5 @@
 <?php
+  require('WriteHTML.php');
 
   if(file_exists('../model/resultado.temp'))
   {
@@ -8,6 +9,42 @@
     $resultado = file_get_contents('../model/resultado.temp');
     $resultado = unserialize($resultado);
     // # Criando Tabela:
+    $text = '<html>
+    <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    <br>
+      <table border="1">
+        <tr>
+          <th>CNPJ</th>
+          <th>Nome Fantasia</th>
+          <th>Razão Social</th>
+          <th>Nº Func.</th>
+        </tr>';
+
+
+        $pdf=new PDF_HTML();
+
+        $pdf->AliasNbPages();
+        $pdf->SetAutoPageBreak(true, 15);
+
+        $pdf->AddPage();
+        $pdf->SetFont('Arial','B',11);
+
     ?><center>
     <style>
 table {
@@ -81,13 +118,16 @@ tr:nth-child(even) {
       </tr>
       */
           $temp = $resultado->getEstabelecimento();
-          // file_put_contents("resultado_busca.txt",print_r($temp));
           $count = 0;
           foreach($temp as $t){
             $t->carregar();
             $t->carregarCategoria();
             $t->carregarHorario();
             $t->carregarLocal();
+            $cnpj =  $t->getCnpj();
+            $fantasia =  $t->getNomeFantasia();
+            $razao = $t->getRazaoSocial();
+            $nfunc = $t->getNFuncionario();
             ?>
             <tr>
               <td class="cnpj-mask" id='cnpj_<?php echo $count;?>'><?php echo $t->getCnpj(); ?></td>
@@ -97,8 +137,20 @@ tr:nth-child(even) {
               <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(95078178000161)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_1').cleanVal();">Funcionários</msv> </td>
             </tr>
             <?
+            $text .= '<tr>
+              <td class="cnpj-mask" id='cnpj_'.$count.''>'.$cnpj.'</td>
+              <td> '.$fantasia.'</td>
+              <td>'.$razao.'</td>
+              <td>'.$nfunc.'</td>
+            </tr>';
             $count++;
           }
+          $text .=  '</table>
+                    </html>';
+          file_put_contents("textpdf.txt",$text);
+
+          $pdf->WriteHTML("$text");
+          $pdf->Output('D','relatorio.pdf');
       ?>
     </table>
     <script>
@@ -113,8 +165,8 @@ tr:nth-child(even) {
           type: "POST",
           data: {cnpj:cnpj},
           success: function (result) {
-          // you will get response from your php page (what you echo or print)
-          }
+            result = JSON.parse(result);
+        }
         });
       }
     }
