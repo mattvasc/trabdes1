@@ -45,7 +45,7 @@
 								<div id='coisa' >
 								</div>
 								<div class="form-row">
-									<table><tr><td>	<button type="button" value="Voltar" onclick="voltar()"> Voltar </button>			<button type="button" name="rank" onclick="validar()">Buscar</button>
+										<button type="button" name="rank" onclick="validar()">Buscar</button>
 							</div>
 
 </form>
