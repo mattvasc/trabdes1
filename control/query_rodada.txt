@@ -1,1 +1,1 @@
-Query:  SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` LIKE '%Dona%'); consulta_dado: Donado OBJ: Dona
+Query:  SELECT `cnpj` FROM `estabelecimento`; consulta_dado: do OBJ: 

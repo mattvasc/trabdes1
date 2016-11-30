@@ -116,8 +116,8 @@ if(!empty($_POST))
 
 
     file_put_contents('../model/estabelecimento.temp', serialize($estabelecimento));
-	if($_POST['prox']=='salvar'){// ir para cadastro_responsavel com cnpj via $_POST;
     $estabelecimento->salvar();
+	if($_POST['prox']=='salvar'){// ir para cadastro_responsavel com cnpj via $_POST;
 
     ?>
       <script type="text/Javascript">
@@ -126,6 +126,7 @@ if(!empty($_POST))
     <?php
 	}
 	else if($_POST['prox'] == 'alterar'){
+
 	 ?>
       <script type="text/Javascript">
         window.location.href = '../index.php';

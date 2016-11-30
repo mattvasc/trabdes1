@@ -476,34 +476,7 @@
 						}
 				});
 				}
-				function SubSetorizar() {
-					$('.form-input-setor-row').removeClass('form-invalid-data');
-					$('.form-input-setor-row').removeClass('form-valid-data');
-					var select = document.getElementById("SubSetor");
-					var option;
-
-					while (select.length > 1) {
-						select.remove(select.length-1);
-					}
-
-					$.ajax({
-		        url: '../control/setor.php',
-		        type: "POST",
-		        data: { Setor: $('#setor').val() },
-		        // dataType: 'application/json; charset=utf-8',
-		        success: function (result) {
-							result = JSON.parse(result);
-
-								//alert(data);
-		            for (var x = 0; x < result.length; x++) {
-									//alert(result[x]);
-									option = document.createElement('option');
-					        option.text = option.value = result[x];
-					        select.add(option, select.length);
-								}
-		        }
-		    });
-				}
+			
 			</script>
 			<?php
 

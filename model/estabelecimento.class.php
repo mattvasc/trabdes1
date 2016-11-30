@@ -243,7 +243,7 @@
     }
     public function carregarHorario(){
       $conn = Connection::open();
-      $query = "SELECT estabelecimento_horario.horario_inicio, estabelecimento_horario.horario_fim FROM `estabelecimento` INNER JOIN estabelecimento_horario ON estabelecimento.cnpj = estabelecimento_horario.cnpj WHERE estabelecimento_horario.cnpj = '$this->cnpj';";
+      $query = "SELECT horario_inicio, horario_fim FROM estabelecimento_horario WHERE cnpj = '$this->cnpj';";
       $result = mysqli_query($conn,$query);
       Connection::closeConnection($conn);
       if($row = mysqli_fetch_assoc($result)){
