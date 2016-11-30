@@ -142,7 +142,6 @@ tr:nth-child(even) {
     <?php
   }
   else{
-    rename("../model/resultado.temp.bkp","../model/resultado.temp");
 
     ?>
     <br><br><center>

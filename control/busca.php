@@ -17,11 +17,11 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
 
         // descobre o cnpj, se nao for o item da busca
       if ($_POST["tipo"]=="nome_fantasia") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` ILIKE '$consulta%'); ";
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` LIKE '%$consulta%'); ";
       }elseif ($_POST["tipo"]=="cnpj") {
            $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`cnpj` = $consulta); ";
       }elseif ($_POST["tipo"]=="razao_social") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` ILIKE '$consulta%'); ";
+           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` LIKE '%$consulta%'); ";
       }elseif ($_POST["tipo"]=="categoria") {
            $query = " SELECT `cnpj` FROM `estabelecimento_categoria` WHERE 0 ";
            $
@@ -58,6 +58,7 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
                   $resultado_final->setValorCampo($consulta);
                   file_put_contents("query_rodada.txt","do OBJ: ".$consulta, FILE_APPEND);
+                  unlink('../model/resultado.temp');
                   file_put_contents('../model/resultado.temp', serialize($resultado_final));
 
                   Connection::closeConnection($conn);
