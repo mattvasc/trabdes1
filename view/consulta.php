@@ -68,31 +68,50 @@
 								var invisivel = document.getElementById('consulta_dado');
 								var campox = document.getElementById('campo')
 								invisivel.value = campox.value;
-								// document.getElementById('myform').submit();
-								alert("salvando!");
+							  document.getElementById('myform').submit();
 
 							}
 					}
 					else if(tipo == "local"){
-						if(validar_combobox(0) && validar_combobox(1))
-							alert("salvando!");
+						if(validar_combobox(0) && validar_combobox(1)){
+								document.getElementById('consulta_dado').value = document.getElementById('setor').value + ','+document.getElementById('subsetor').value
+								document.getElementById('myform').submit();
+						}
+
 						else {
 							alert("Selecione todos os combos!");
 						}
 
 					}
 					else if(tipo == "categoria"){
-
+							var getArrVal = $('input[type="checkbox"][name="chkBx[]"]:checked').map(function(){
+							return this.value;
+						}).toArray();
+						if(!getArrVal.length){
+							alert("Selecione ao menos uma Cateoria!");
+						}
+						else{
+							var c;
+								for(c=0;c< getArrVal.length; c++)
+									if(c==0)
+										document.getElementById('consulta_dado').value = getArrVal[0];
+									else
+										document.getElementById('consulta_dado').value += ","+getArrVal[0];
+										
+								document.getElementById('myform').submit();
+						}
 					}
 					else if(tipo=="horario"){ //horario
-						if(validar_combobox(2))
-							alert("salvando!");
+						if(validar_combobox(2)){
+							document.getElementById('consulta_dado').value = document.getElementById('horario').value;
+							document.getElementById('myform').submit();
+						}
 						else {
 							alert("Selecione um horário!");
 						}
 					}
 					else{
-
+						alert('Erro!');
 					}
 
 				}
@@ -155,8 +174,28 @@
 
 						}
 						else if(tipo=="horario"){ //horario
-							div.innerHTML="";
-
+							div.innerHTML='<select name="horario" id="horario"><option value="">Selecione</option></select>';
+							var select = document.getElementById('horario');
+							var arrai;
+							$.ajax({
+								url: '../control/ajax_horario.php',
+								type: "POST",
+								data: { variavel: 'oi' },
+								success: function (result) {
+									result = JSON.parse(result);
+										for (var x = 0; x < result.length; x++) {
+											option = document.createElement('option');
+											if(result[x]=='00:00:00,23:59:59')
+												option.text = '24 Horas';
+											else{
+												arrai = result[x].split(',');
+												option.text = arrai[0] + " ~ " + arrai[1];
+											}
+											option.value = result[x];
+											select.add(option, select.length);
+										}
+								}
+						});
 						}
 						else
 							div.innerHTML="";
