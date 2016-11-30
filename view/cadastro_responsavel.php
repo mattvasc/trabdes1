@@ -132,8 +132,10 @@ function validar_telefone(){
         campo.addClass('form-invalid-data');
         campo.find('.form-invalid-data-info').text('Informe um telefone válido!');
         return false;
-    }else
+    }else{
+        campo.addClass('form-valid-data');
         return true;
+    }
 }
 function validar_nome(nome){
     var patternValidaNome = /^[a-zA-Z\s]*$/;;
@@ -152,6 +154,7 @@ function validar_nome(nome){
         return 0;
     }
     if(patternValidaNome.test(nome)){
+        campo.addClass('form-valid-data');
         return 1;
         //alert(patternValidaNome.test(nome));
     }
