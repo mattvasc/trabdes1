@@ -31,7 +31,7 @@
                 <?php require_once('../control/resultado.php'); ?>
               </div>
 
-							<input type="button" value="Voltar">
+							<input type="button" value="Voltar" onclick="voltar()">
 
           </div>
         </div>
@@ -42,7 +42,12 @@
 
     </div>
 		<footer>
-
+			<script>
+				function voltar(){
+					window.history.back();
+					window.location.href = "../index.php";
+				}
+			</script>
 		</footer>
 </body>
 

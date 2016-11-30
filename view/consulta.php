@@ -37,15 +37,16 @@
 												<option value="razao_social">Razao Social</option>
                         <option value="local">Local</option>
                         <option value="categoria">Categoria</option>
+												<option value="categoria-local">Categoria e Local</option>
                         <option value="horario">Horario de Funcionamento</option>
                     </select>
                 </label> <br> <br>
 								<input type="hidden" name="consulta_dado" id="consulta_dado" >
 								<div id='coisa' >
 								</div>
-
-								<button type="button" name="rank" onclick="validar()">buscar</button>
-
+								<div class="form-row">
+									<table><tr><td>	<button type="button" value="Voltar" onclick="voltar()"> Voltar </button>			<button type="button" name="rank" onclick="validar()">Buscar</button>
+							</div>
 
 </form>
 
@@ -92,6 +93,23 @@
 						}
 						else{
 								document.getElementById('myform').submit();
+						}
+					}
+					else if(tipo=="categoria-local"){
+						var getArrVal = $('input[type="checkbox"][name="chkBx[]"]:checked').map(function(){
+						return this.value;
+						}).toArray();
+						if(validar_combobox(0) && validar_combobox(1)){
+							if(getArrVal.length){
+								document.getElementById('consulta_dado').value = document.getElementById('setor').value + ','+document.getElementById('subsetor').value;
+								document.getElementById('myform').submit();
+							}
+							else {
+								alert("Selecione ao menos uma Categoria!");
+							}
+						}
+						else {
+							alert("Selecione um local primeiramente!");
 						}
 					}
 					else if(tipo=="horario"){ //horario
@@ -163,6 +181,40 @@
 								}
 						});
 
+						}
+						else if(tipo=='categoria-local'){
+							div.innerHTML = '<input type="checkbox" name="gambiarra" id="gambiarra" value="" style="display:none">';
+							div.innerHTML += '<br><br><label for="setor">Setor:</label>';
+							div.innerHTML+='	<select name="setor" id="setor" onchange="SubSetorizar()"><option value="">Selecione</option>	</select>';
+							div.innerHTML+=' <br><br>';
+							div.innerHTML += '<label for="setor">Subsetor:</label>';
+							div.innerHTML+='	<select name="subsetor" id="subsetor"> <option value="">Selecione</option></select><br><br><br>';
+							var select = document.getElementById('setor');
+							var option;
+							$.ajax({
+								url: '../control/ajax_setor.php',
+								type: "POST",
+								data: { frase: 'oi' },
+								success: function (result) {
+									result = JSON.parse(result);
+									for (var x = 0; x < result.length; x++) {
+										option = document.createElement('option');
+										option.text = option.value = result[x];
+										select.add(option, select.length);
+									}
+								}
+						});
+						$.ajax({
+							url: '../control/ajax_categoria.php',
+							type: "POST",
+							data: { frase: 'oi' },
+							success: function (result) {
+								result = JSON.parse(result);
+								for (var x = 0; x < result.length; x++) {
+									div.innerHTML+= '<label><input type ="checkbox" name="chkBx[]" value ="'+result[x]+'" id="'+ result[x] +'">'+result[x]+'</label><br>';
+								}
+							}
+					});
 						}
 						else if(tipo=="horario"){ //horario
 							div.innerHTML='<select name="horario" id="horario"><option value="">Selecione</option></select>';

@@ -1,1 +1,1 @@
-Query:  SELECT `cnpj` FROM `estabelecimento`; consulta_dado: do OBJ: 
+Query: SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE 0  OR (`nome` = 'Café') ) AS `temp` WHERE `temp`.setor = 'Terminal 1' AND `temp`.subsetor = 'D' ;consulta_dado: Terminal 1,D,Café,do OBJ: Terminal 1,D,Café,

@@ -50,6 +50,13 @@ tr:nth-child(even) {
         case 'categoria':
           echo 'Categorias: ' . $resultado->getValorCampo();
         break;
+        case 'categoria-local':
+          $temp = explode(',',$resultado->getValorCampo());
+          echo 'Local: '.$temp[0].' - '.$temp[1].".<br> Categoria(s): ";
+          for($i=2;$i < count($temp);$i++){
+            echo $temp[$i].' ';
+          }
+        break;
       default:
         echo "alguma coisa não cadastrada no switch";
       break;

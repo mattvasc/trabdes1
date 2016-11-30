@@ -39,6 +39,18 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
           $temp_array = explode(',',$consulta);
            $query = " SELECT `cnpj` FROM `estabelecimento_horario` WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."'); ";
       }
+      elseif($_POST["tipo"]=="categoria-local"){
+          $query = "SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE 0 ";
+          $temp_array = explode(',',$consulta);
+          $consulta = '';
+          foreach($_POST['chkBx'] as $categoria ){
+             $query .= " OR (`nome` = '$categoria') ";
+             $consulta.= $categoria.',';
+           }
+          $query .= ") AS `temp` WHERE `temp`.setor = '".$temp_array[0]."' AND `temp`.subsetor = '".$temp_array[1]."' ;";
+          $consulta = $temp_array[0].','.$temp_array[1].','.$consulta;
+
+      }
       elseif ($_POST["tipo"]=="todos"){
         $query = " SELECT `cnpj` FROM `estabelecimento`; ";
       }
