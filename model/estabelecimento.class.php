@@ -139,24 +139,19 @@
       return 1;
 
     }
-    public function salvarResponsavel(){
+    public function salvarResponsavel(Responsavel $r){
       require_once('../control/Connection.php');
       $conn = Connection::open();
       // Inserindo os responsaveis do estabelecimento com fk:
-      if(!empty($this->responsavel)){
-        foreach ($this->responsavel as $r) {
-          file_put_contents("classe_estabelecimento_vamover.txt", $r->getNome()."\t".$r->getcpf()."\n", FILE_APPEND);
+          file_put_contents("salvarResponsaveis.txt", $r->getNome()."\t".$r->getcpf()."\n");
           $result = mysqli_query($conn, "INSERT INTO `responsavel`(`cpf`, `nome`, `telefone`, `cnpj`) VALUES ('".$r->getCpf()."', '".$r->getNome()."', '".$r->getTelefone()."', '".$this->getCnpj()."');");
           if(!$result){
             Connection::closeConnection($conn);
             return 0;
           }
-        }
-      }else{
-        Connection::closeConnection($conn);
-        return 0;
-
-      }
+          if($r->getEmail()){
+              $result = mysqli_query($conn, "UPDATE `responsavel` SET `email` = '".$r->getEmail()."' WHERE `cpf` = '".$r->getCpf()."';");
+          }
       return 1;
     }
     private function salvarHorario(){
@@ -211,6 +206,7 @@
       if(!empty($this->site))
         mysqli_query($conn, "UPDATE `estabelecimento` SET `site`= '$this->site' WHERE  `cnpj`= '$this->cnpj';");
     }
+
     public function salvar(){
         $this->salvarEstabelecimento();
         $this->salvarLocal();

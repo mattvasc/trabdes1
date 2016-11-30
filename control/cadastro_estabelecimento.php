@@ -113,10 +113,12 @@ if(!empty($_POST))
       $estabelecimento->setTelefone($_POST['telefone']);
     if(isset($_POST['data_fim'])&& !empty($_POST['data_fim']))
       $estabelecimento->setDataFim($_POST['data_fim']);
-    $estabelecimento->salvar();
+
 
     file_put_contents('../model/estabelecimento.temp', serialize($estabelecimento));
 	if($_POST['prox']=='salvar'){// ir para cadastro_responsavel com cnpj via $_POST;
+    $estabelecimento->salvar();
+
     ?>
       <script type="text/Javascript">
         window.location.href = 'cadastro_responsavel.php';

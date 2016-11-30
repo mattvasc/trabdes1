@@ -16,6 +16,12 @@
     <link href="view/assets/css/personalizado.css" rel="stylesheet">
   </head>
   <header>
+    <?php
+    if(file_exists('model/estabelecimento.temp')){
+      unlink('model/estabelecimento.temp');
+    }
+
+    ?>
 		<h1>2101 Airlines</h1>
     </header>
 
