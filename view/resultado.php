@@ -48,6 +48,41 @@
 					window.location.href = "../index.php";
 				}
 			</script>
+			    <script>
+				$(document).ready(function(){
+				$('.cnpj-mask').mask('00.000.000/0000-00', {reverse: false});
+				});
+				function desativar(cnpj){
+				var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
+				if (r) {
+				$.ajax({
+				url: '../control/apagar.php',
+				type: "POST",
+				data: {cnpj:cnpj},
+				success: function (result) {
+				// you will get response from your php page (what you echo or print)
+				}
+				});
+				}
+				}
+    </script>
+	    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
 		</footer>
 </body>
 
