@@ -16,43 +16,44 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
       $resultado_final = new Resultado();
 
         // descobre o cnpj, se nao for o item da busca
+		$date  = date('Y-m-d');
       if ($_POST["tipo"]=="nome_fantasia") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`nome_fantasia` LIKE '%$consulta%'); ";
+           $query = "SELECT DISTINCT `estabelecimento`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (`nome_fantasia` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="cnpj") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`cnpj` = $consulta); ";
+           $query = "SELECT DISTINCT temp.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS  temp	 WHERE (temp.`cnpj` = '$consulta') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="razao_social") {
-           $query = " SELECT `cnpj` FROM `estabelecimento` WHERE (`razao_social` LIKE '%$consulta%'); ";
+           $query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="categoria") {
-           $query = " SELECT `cnpj` FROM `estabelecimento_categoria` WHERE 0 ";
+           $query = "SELECT estabelecimento_categoria.cnpj FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (0 ";
            $
            $consulta = '';
            foreach($_POST['chkBx'] as $categoria ){
               $query .= " OR (`nome` = '$categoria') ";
               $consulta.= $categoria.',';
             }
-           $query .= " ;";
+           $query .= ") ;";
       }
       elseif ($_POST["tipo"]=="local") {
             $temp_array = explode(',',$consulta);
-           $query = "SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` LIKE '".$temp_array[0]."') AND (`subsetor` LIKE '".$temp_array[1]."');";
+           $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` = '$temp_array[0]') AND (`subsetor` = '$temp_array[1]') AND (data_fim IS NULL OR data_fim > '$date');";
       }elseif ($_POST["tipo"]=="horario") {
           $temp_array = explode(',',$consulta);
-           $query = " SELECT `cnpj` FROM `estabelecimento_horario` WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."'); ";
+           $query = "SELECT `cnpj` FROM `estabelecimento_horario` NATURAL JOIN estabelecimento_local WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."') AND (estabecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date');";
       }
       elseif($_POST["tipo"]=="categoria-local"){
-          $query = "SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE 0 ";
+		  /*SELECT estabelecimento_categoria.`cnpj` FROM `estabelecimento_categoria` INNER JOIN `estabelecimento_local` ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (estabelecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '2016-12-01') AND (0  OR (`nome` = 'Transporte de Carga') ) AND setor = 'Terminal 5' AND subsetor = 'lol'*/
+          $query = "SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE (estabecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date') AND (0 ";
           $temp_array = explode(',',$consulta);
           $consulta = '';
           foreach($_POST['chkBx'] as $categoria ){
              $query .= " OR (`nome` = '$categoria') ";
              $consulta.= $categoria.',';
            }
-          $query .= ") AS `temp` WHERE `temp`.setor = '".$temp_array[0]."' AND `temp`.subsetor = '".$temp_array[1]."' ;";
+          $query .= ")) AS `temp` WHERE `temp`.setor = '".$temp_array[0]."' AND `temp`.subsetor = '".$temp_array[1]."' ;";
           $consulta = $temp_array[0].','.$temp_array[1].','.$consulta;
-
       }
       elseif ($_POST["tipo"]=="todos"){
-        $query = " SELECT `cnpj` FROM `estabelecimento`; ";
+        $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE  `data_fim` IS NULL OR `data_fim` > '$date';";
       }
         unlink("query_rodada.txt");
         file_put_contents("query_rodada.txt","Query: ". $query, FILE_APPEND);

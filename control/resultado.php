@@ -9,25 +9,9 @@
     $resultado = unserialize($resultado);
     // # Criando Tabela:
     ?><center>
-    <style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
-  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por
-  <?php
+	  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por
+	  <?php
     switch ($resultado->getCampoPesquisado()) {
       case 'nome_fantasia':
         echo 'Nome Fantasia: '.(string)$resultado->getValorCampo();
@@ -60,7 +44,7 @@ tr:nth-child(even) {
       default:
         echo "alguma coisa não cadastrada no switch";
       break;
-    };
+    }
 
   ?>
 
@@ -90,7 +74,7 @@ tr:nth-child(even) {
           $temp = $resultado->getEstabelecimento();
           // file_put_contents("resultado_busca.txt",print_r($temp));
           $count = 0;
-          foreach($temp as $t){
+          foreach($temp as $t):
             $t->carregar();
             $t->carregarCategoria();
             $t->carregarHorario();
@@ -103,45 +87,14 @@ tr:nth-child(even) {
               <td> <?php echo $t->getNFuncionario();?> </td>
               <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(<?php echo $t->getCnpj(); ?>)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();">Funcionários</msv> </td>
             </tr>
-            <?
+            <?php
             $count++;
-          }
+			endforeach;
       ?>
     </table>
-    <script>
-    $(document).ready(function(){
-      $('.cnpj-mask').mask('00.000.000/0000-00', {reverse: false});
-    });
-    function desativar(cnpj){
-      var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
-      if (r) {
-         $.ajax({
-          url: '../control/apagar.php',
-          type: "POST",
-          data: {cnpj:cnpj},
-          success: function (result) {
-          // you will get response from your php page (what you echo or print)
-          }
-        });
-      }
-    }
-    </script>
-    </center>
-    <?php
-    /*
-    require_once('../model/resultado.class.php');
-    require_once('../model/estabelecimento.class.php');
-    $resultado = file_get_contents('../model/resultado.temp');
-    $resultado = unserialize($resultado);
-    $vetor = $resultado->getEstabelecimento();
-    foreach ($vetor as $estabelecimento) {
-      # imprime uma linha na tabela
 
-    }
-    unlink('../model/resultato.temp');*/
-    // rename("../model/resultado.temp","../model/resultado.temp.bkp");
-    // # Fechando Tabela
-    ?>
+    </center>
+
     <br><br>
     <center>
     <input type="button" value="Gerar Relatório">
