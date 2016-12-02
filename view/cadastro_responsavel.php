@@ -91,7 +91,7 @@
                 <span class="form-invalid-data-info"></span>
             </div>
             <div class="col-md-3 form-input-submit">
-                <button type="button" onclick="retornar()">Concluído</button>
+                <button type="button" onclick="retornar()">Finalizar</button>
             </div>
         </div>
       </form>
