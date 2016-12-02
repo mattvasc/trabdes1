@@ -19,7 +19,7 @@ SET time_zone = "-03:00";
 --
 -- Database: `2101_airlines`
 --
-CREATE DATABASE `2101_airlines`;
+CREATE DATABASE IF NOT EXISTS `2101_airlines` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `2101_airlines`;
 -- --------------------------------------------------------
 --
