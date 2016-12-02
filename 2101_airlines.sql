@@ -67,6 +67,7 @@ CREATE TABLE `estabelecimento` (
   `n_funcionario` smallint(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Main table guys';
 
+ALTER TABLE estabelecimento ADD UNIQUE (telefone);
 --
 -- Dumping data for table `estabelecimento`
 --
