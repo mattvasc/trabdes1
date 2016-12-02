@@ -32,12 +32,15 @@
               <div id="resultado" name="resultado" class="form-row form-input-cnpj-row">
                 <?php require_once('../control/resultado.php'); ?>
               </div>
-
-							<input type="button" value="Voltar" onclick="voltar()">
+							<div id="voltar_div">
+							<input type="button" value="Voltar" id="voltar" onclick="voltar()">
+						</div>
 
           </div>
         </div>
-
+			<form method="post" id="theForm" action="../control/gerar_pdf.php">
+					<input type="hidden" name="imprimir" id="imprimir">
+			</form>
 
 
 
@@ -49,8 +52,13 @@
 					window.history.back();
 					window.location.href = "../index.php";
 				}
-			</script>
-			    <script>
+				function vaiGerar(){
+					$(".acao").remove();
+					document.getElementById('voltar_div').innerHTML = "";
+					document.getElementById('div_3').innerHTML = "";
+					document.getElementById('imprimir').value = document.documentElement.innerHTML;
+					document.getElementById('theForm').submit();
+				}
 				$(document).ready(function(){
 				$('.cnpj-mask').mask('00.000.000/0000-00', {reverse: false});
 				});
@@ -67,6 +75,7 @@
 				});
 				}
 				}
+
     </script>
 	    <style>
 table {

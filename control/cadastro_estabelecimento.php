@@ -116,7 +116,8 @@ if(!empty($_POST))
     if(isset($_POST['n_funcionario']) && !empty($_POST['n_funcionario'])){
       $estabelecimento->setNFuncionario($_POST['n_funcionario']);
     }
-
+    require_once("../model/horario.class.php");
+    require_once("../model/local.class.php");
     file_put_contents('../model/estabelecimento.temp', serialize($estabelecimento));
     $estabelecimento->salvar();
 	if($_POST['prox']=='salvar'){// ir para cadastro_responsavel com cnpj via $_POST;

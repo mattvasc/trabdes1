@@ -100,7 +100,7 @@
       $this->local->setDataInicio(implode('-', array_reverse(explode('/', $data))));
     }
     public function setDataFim($data)    {
-      $this->local->setDataFimdata_fim(implode('-', array_reverse(explode('/', $data))));
+      $this->local->setDataFim(implode('-', array_reverse(explode('/', $data))));
     }
     public function getDataInicio(){
       return $this->local->getDataInicio();
@@ -152,10 +152,12 @@
     private function salvarHorario(){
       //Inserindo o horário de funcionamento
       $retorno = 0;
-      if(!empty($this->horario->getHorarioInicio()) && !empty($this->horario->getHorarioFim)){
+      if(!empty($this->horario->getHorarioInicio()) && !empty($this->horario->getHorarioFim())){
         require_once('../control/Connection.php');
         $conn = Connection::open();
-        $query = "INSERT INTO `estabelecimento_horario`(`cnpj`, `horario_inicio`, `horario_fim`) VALUES ('$this->cnpj', '$this->horario->getHorarioInicio()', '$this->horario->getHorarioFim()');";
+        $hora_ini = $this->horario->getHorarioInicio();
+        $hora_fim = $this->horario->getHorarioFim();
+        $query = "INSERT INTO `estabelecimento_horario`(`cnpj`, `horario_inicio`, `horario_fim`) VALUES ('$this->cnpj', '$hora_ini', '$hora_fim');";
         $retorno = mysqli_query($conn,$query);
         Connection::closeConnection($conn);
 
@@ -168,10 +170,14 @@
       require_once('../control/Connection.php');
       $conn = Connection::open();
       if(!empty($this->local->getSetor()) && !empty($this->local->getSubSetor())  && !empty($this->local->getDataInicio())){
-        if(!empty($this->local->getDataFim()))
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$this->local->getSetor()','$this->local->getSubSetor()','$this->local->getDataInicio()','$this->local->getDataFim()');";
-        else
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$this->local->getSetor()','$this->local->getSubSetor()','$this->local->getDataFim()');";
+          $setor = $this->local->getSetor();
+          $subsetor = $this->local->getSubSetor();
+          $data_ini = $this->local->getDataInicio();
+        if(!empty($this->local->getDataFim())){
+          $data_fim = $this->local->getDataFim();
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$setor','$subsetor','$data_ini','$data_fim');";}
+        else{
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$setor','$subsetor','$data_ini');";}
         if(mysqli_query($conn,$query))
         {
           Connection::closeConnection($conn);

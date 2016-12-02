@@ -10,14 +10,15 @@
     // # Criando Tabela:
     ?><center>
 
-	  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y");?>.<br> Busca por
+	  Data da pesquisa: <?php date_default_timezone_set('America/Sao_Paulo'); echo date("d/m/Y - h:i");?>.<br> Busca por <b>
 	  <?php
     switch ($resultado->getCampoPesquisado()) {
       case 'nome_fantasia':
         echo 'Nome Fantasia: '.(string)$resultado->getValorCampo();
         break;
         case 'todos':
-          echo 'Todos os estabelecimento';
+          echo 'Todos os estabelecimentos.<br>';
+          echo 'Maior número de fúncionários: '.$resultado->getValorCampo();
         break;
         case 'horario':
           echo 'Horário de Funcionamento: '.$resultado->getValorCampo();
@@ -32,14 +33,19 @@
           echo 'CNPJ: ' . $resultado->getValorCampo();
         break;
         case 'categoria':
-          echo 'Categorias: ' . $resultado->getValorCampo();
+          echo 'Categorias. Quantidade por categoria: ';
+          $temp = explode(',',$resultado->getValorCampo());
+          for($i=0; $i<count($temp)-1;$i+=2){
+            echo "<br>".$temp[$i]." - ". $temp[$i+1];
+          }
         break;
         case 'categoria-local':
           $temp = explode(',',$resultado->getValorCampo());
-          echo 'Local: '.$temp[0].' - '.$temp[1].".<br> Categoria(s): ";
-          for($i=2;$i < count($temp);$i++){
+          echo 'Local: '.$temp[0].".<br> Categoria(s): ";
+          for($i=1;$i < count($temp)-1;$i++){
             echo $temp[$i].' ';
           }
+          echo "<br>Estabelecimentos encontrados: ". $temp[count($temp)-1];
         break;
       default:
         echo "alguma coisa não cadastrada no switch";
@@ -47,7 +53,7 @@
     }
 
   ?>
-
+</b>
 
 
 
@@ -61,7 +67,7 @@
         <th> Horário </th>
         <th> Setor </th>
         <th> Subsetor </th>
-        <th>Ação</th>
+        <th class="acao" >Ação</th>
       </tr>
 
       <?php
@@ -77,6 +83,7 @@
           $temp = $resultado->getEstabelecimento();
           // file_put_contents("resultado_busca.txt",print_r($temp));
           $count = 0;
+          if(!empty($temp)){
           foreach($temp as $t):
             $t->carregar();
             $t->carregarCategoria();
@@ -91,11 +98,24 @@
               <td> <?php echo ($t->getHorarioInicio()=='00:00:00' && $t->getHorarioFim()=='23:59:59')?'24 Horas':substr($t->getHorarioInicio(),0,5)." ~ ".substr($t->getHorarioFim(),0,5);;?> </td>
               <td> <?php echo $t->getSetor();?> </td>
               <td> <?php echo $t->getSubSetor();?> </td>
-              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(<?php echo $t->getCnpj(); ?>)"> Desativar </href> </td>
+              <td class="acao"> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(<?php echo $t->getCnpj(); ?>)"> Desativar </href> </td>
             </tr>
             <?php
             $count++;
 			endforeach;
+      }
+      else{ ?>
+        <tr>
+          <td> 00.000.000.0001-00</td>
+          <td> Nada </td>
+          <td> Encontrado </td>
+          <td> com a busca</td>
+          <td> Informada </td>
+          <td> Por favor </td>
+          <td> Tente novamente!</td>
+          <td class="acao"> =( </td>
+        </tr> <?php
+      }
       ?>
     </table>
 
@@ -103,7 +123,9 @@
 
     <br><br>
     <center>
-    <input type="button" value="Gerar Relatório">
+      <div id="div_3">
+    <input type="button" value="Gerar Relatório" onclick="vaiGerar()">
+  </div>
   </center>
     <?php
   }

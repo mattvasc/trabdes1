@@ -24,12 +24,14 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
       }elseif ($_POST["tipo"]=="razao_social") {
            $query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="categoria") {
-           $query = "SELECT estabelecimento_categoria.cnpj FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (0 ";
-           $
+           $query = "SELECT DISTINCT estabelecimento_categoria.cnpj FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (0 ";
            $consulta = '';
            foreach($_POST['chkBx'] as $categoria ){
               $query .= " OR (`nome` = '$categoria') ";
+              $mini_query = "SELECT COUNT(`nome`) AS `qtd` FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (`nome` = '$categoria')";
+              file_put_contents("mini_queries.txt",$mini_query."\n", FILE_APPEND);
               $consulta.= $categoria.',';
+              $consulta.= mysqli_fetch_array(mysqli_query($conn,$mini_query))['qtd'].',';
             }
            $query .= ") ;";
       }
@@ -38,21 +40,26 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
            $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE (`setor` = '$temp_array[0]') AND (`subsetor` = '$temp_array[1]') AND (data_fim IS NULL OR data_fim > '$date');";
       }elseif ($_POST["tipo"]=="horario") {
           $temp_array = explode(',',$consulta);
-           $query = "SELECT `cnpj` FROM `estabelecimento_horario` NATURAL JOIN estabelecimento_local WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."') AND (estabecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date');";
+           $query = "SELECT `cnpj` FROM `estabelecimento_horario` NATURAL JOIN estabelecimento_local WHERE (`horario_inicio` = '".$temp_array[0]."') AND (`horario_fim` = '".$temp_array[1]."') AND (estabelecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date');";
       }
       elseif($_POST["tipo"]=="categoria-local"){
-          $query = "SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE (estabecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date') AND (0 ";
+          $query = "SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE (estabelecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date') AND (0 ";
+          $query_contadora = "SELECT COUNT(cnpj) AS numero FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE (estabelecimento_local.data_fim IS NULL OR estabelecimento_local.data_fim > '$date') AND (0 ";
           $temp = $consulta;
           $consulta = '';
+
           foreach($_POST['chkBx'] as $categoria ){
              $query .= " OR (`nome` = '$categoria') ";
+             $query_contadora .= " OR (`nome` = '$categoria') ";
              $consulta.= $categoria.',';
            }
           $query .= ")) AS `temp` WHERE `temp`.setor = '".$temp."';";
+          $query_contadora .= ")) AS `temp` WHERE `temp`.setor = '".$temp."';";
           $consulta = $temp.','.$consulta;
       }
       elseif ($_POST["tipo"]=="todos"){
         $query = " SELECT `cnpj` FROM `estabelecimento_local` WHERE  `data_fim` IS NULL OR `data_fim` > '$date';";
+        $consulta = mysqli_fetch_array(mysqli_query($conn,"SELECT MAX(n_funcionario) AS maximo FROM `estabelecimento`;"))['maximo'];
       }
         unlink("query_rodada.txt");
         file_put_contents("query_rodada.txt","Query: ". $query, FILE_APPEND);
@@ -69,6 +76,13 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
                   $resultado_final->setEstabelecimento($estabelecimento);
                   $resultado_final->setCampoPesquisado($_POST["tipo"]);
                   $resultado_final->setValorCampo($consulta);
+                  if($_POST['tipo']=="categoria-local")
+                  {
+                    $query_contadora = mysqli_query($conn, $query_contadora);
+                    $numero = mysqli_fetch_array($query_contadora)['numero'];
+                    $resultado_final->setValorCampo($resultado_final->getValorCampo().','.$numero);
+
+                  }
                   file_put_contents("query_rodada.txt","do OBJ: ".$consulta, FILE_APPEND);
                   unlink('../model/resultado.temp');
                   file_put_contents('../model/resultado.temp', serialize($resultado_final));

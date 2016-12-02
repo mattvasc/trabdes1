@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="view/assets/css/demo.css">
     <link href="view/assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-
+    <link rel="icon" href="view/assets/icone.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="view/assets/icone.ico" type="image/x-icon" />
     <link href="view/assets/css/personalizado.css" rel="stylesheet">
   </head>
   <header>
