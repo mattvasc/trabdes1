@@ -58,6 +58,9 @@
         <th>Nome Fantasia</th>
         <th>Razão Social</th>
         <th>Nº Func.</th>
+        <th> Horário </th>
+        <th> Setor </th>
+        <th> Subsetor </th>
         <th>Ação</th>
       </tr>
 
@@ -85,7 +88,10 @@
               <td> <?php echo $t->getNomeFantasia(); ?></td>
               <td> <?php echo $t->getRazaoSocial();?></td>
               <td> <?php echo $t->getNFuncionario();?> </td>
-              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(<?php echo $t->getCnpj(); ?>)"> Desativar </href> | <msv style="cursor: pointer;" onclick="window.location.href = './funcionarios.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();">Funcionários</msv> </td>
+              <td> <?php echo ($t->getHorarioInicio()=='00:00:00' && $t->getHorarioFim()=='23:59:59')?'24 Horas':substr($t->getHorarioInicio(),0,5)." ~ ".substr($t->getHorarioFim(),0,5);;?> </td>
+              <td> <?php echo $t->getSetor();?> </td>
+              <td> <?php echo $t->getSubSetor();?> </td>
+              <td> <href style="cursor: pointer;" onclick="window.location.href = './editar.php?cnpj='+$('#cnpj_<?php echo $count;?>').cleanVal();"> Editar </href> | <href style="cursor: pointer;" onclick="desativar(<?php echo $t->getCnpj(); ?>)"> Desativar </href> </td>
             </tr>
             <?php
             $count++;

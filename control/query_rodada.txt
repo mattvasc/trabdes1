@@ -1,1 +1,1 @@
-Query: SELECT `cnpj` FROM ( SELECT * FROM `estabelecimento_categoria` NATURAL JOIN `estabelecimento_local`   WHERE 0  OR (`nome` = 'Café') ) AS `temp` WHERE `temp`.setor = 'Terminal 1' AND `temp`.subsetor = 'D' ;consulta_dado: Terminal 1,D,Café,do OBJ: Terminal 1,D,Café,
+Query: SELECT DISTINCT `estabelecimento`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (`nome_fantasia` LIKE 'T&T%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '2016-12-02');consulta_dado: T&Tdo OBJ: T&T

@@ -10,6 +10,8 @@
 		<link rel="stylesheet" href="assets/css/form-validation.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 		<title>Editar</title>
+		<link rel="icon" href="assets/icone.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="assets/icone.ico" type="image/x-icon" />
 </head>
 <body>
 	<header>
@@ -476,7 +478,7 @@
 						}
 				});
 				}
-			
+
 			</script>
 			<?php
 

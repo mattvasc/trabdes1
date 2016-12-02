@@ -113,7 +113,9 @@ if(!empty($_POST))
       $estabelecimento->setTelefone($_POST['telefone']);
     if(isset($_POST['data_fim'])&& !empty($_POST['data_fim']))
       $estabelecimento->setDataFim($_POST['data_fim']);
-
+    if(isset($_POST['n_funcionario']) && !empty($_POST['n_funcionario'])){
+      $estabelecimento->setNFuncionario($_POST['n_funcionario']);
+    }
 
     file_put_contents('../model/estabelecimento.temp', serialize($estabelecimento));
     $estabelecimento->salvar();

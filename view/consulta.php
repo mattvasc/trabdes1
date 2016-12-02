@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="assets/css/demo.css">
 		<link rel="stylesheet" href="assets/css/form-validation.css">
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<link rel="icon" href="assets/icone.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="assets/icone.ico" type="image/x-icon" />
 		<title>Consultas e Relatório</title>
 </head>
 <body>
@@ -99,9 +101,9 @@
 						var getArrVal = $('input[type="checkbox"][name="chkBx[]"]:checked').map(function(){
 						return this.value;
 						}).toArray();
-						if(validar_combobox(0) && validar_combobox(1)){
+						if(validar_combobox(0)){
 							if(getArrVal.length){
-								document.getElementById('consulta_dado').value = document.getElementById('setor').value + ','+document.getElementById('subsetor').value;
+								document.getElementById('consulta_dado').value = document.getElementById('setor').value;
 								document.getElementById('myform').submit();
 							}
 							else {
@@ -187,8 +189,6 @@
 							div.innerHTML += '<br><br><label for="setor">Setor:</label>';
 							div.innerHTML+='	<select name="setor" id="setor" onchange="SubSetorizar()"><option value="">Selecione</option>	</select>';
 							div.innerHTML+=' <br><br>';
-							div.innerHTML += '<label for="setor">Subsetor:</label>';
-							div.innerHTML+='	<select name="subsetor" id="subsetor"> <option value="">Selecione</option></select><br><br><br>';
 							var select = document.getElementById('setor');
 							var option;
 							$.ajax({
@@ -340,7 +340,7 @@
 						function validar_string(id)
 						{
 								var str4 = document.getElementById(id).value;
-								if(str4.length>3)
+								if(str4.length>1)
 								{
 									return 1;
 								}
