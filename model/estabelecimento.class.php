@@ -1,4 +1,7 @@
 <?php
+  require_once("horario.class.php");
+  require_once("local.class.php");
+  // require_once('');
   class Estabelecimento  {
     private $cnpj;
     private $nome_fantasia;
@@ -6,12 +9,8 @@
     private $responsavel;
     private $telefone;
     private $site;
-    private $setor;
-    private $subsetor;
-    private $data_inicio;
-    private $data_fim;
-    private $horario_incio;
-    private $horario_fim;
+    private $local;
+    private $horario;
     private $categoria;
     private $n_funcionario;
     public function __construct(/* cnpj, nome_fantasia, razao_social, setor, subsetor, data_inicio, horario, [data_fim, ]*/){
@@ -19,6 +18,8 @@
         $this->categoria = array();
         $this->responsavel = array();
         $this->n_funcionario = 0;
+        $this->horario = new Horario();
+        $this->local = new Local();
         $num_args = func_num_args();
         if($num_args>=1){
           $this->setCnpj(func_get_arg(0));
@@ -27,30 +28,18 @@
         {
           $this->setNomeFantasia(func_get_arg(1));
           $this->setRazaoSocial(func_get_arg(2));
-          $this->setSetor(func_get_arg(3));
-          $this->setSubSetor(func_get_arg(4));
+          $this->local->setSetor(func_get_arg(3));
+          $this->local->setSubSetor(func_get_arg(4));
           $this->setDataInicio(func_get_arg(5));
           $arrai = explode(",",func_get_arg(6));
-          $this->setHorarioInicio($arrai[0]);
-          $this->setHorarioFim($arrai[1]);
+          $this->horario->setHorarioInicio($arrai[0]);
+          $this->horario->setHorarioFim($arrai[1]);
         }
         if($num_args>=8)
         $this->setDataFim(func_get_arg(6));
     }
     public function addResponsavel(Responsavel $responsavel){
       $this->responsavel[] = $responsavel;
-    }
-    public function getHorarioFim(){
-      return $this->horario_fim;
-    }
-    public function getHorarioInicio(){
-      return $this->horario_inicio;
-    }
-    public function setHorarioFim($horario){
-      $this->horario_fim = $horario;
-    }
-    public function setHorarioInicio($horario){
-      $this->horario_inicio = $horario;
     }
     public function addCategoria($categoria){
       $this->categoria[] = $categoria;
@@ -78,16 +67,22 @@
       $this->cnpj = $cnpj;
     }
     public function setSetor($setor){
-      $this->setor = $setor;
+      $this->local->setSetor($setor);
     }
     public function setSubSetor($subsetor){
-      $this->subsetor = $subsetor;
+      $this->setSubSetor($subsetor);
+    }
+    public function getHorarioInicio(){
+      return $this->horario->getHorarioInicio();
+    }
+    public function getHorarioFim(){
+      return $this->horario->getHorarioFim();
     }
     public function getSetor(){
-      return $this->setor;
+      return $this->local->getSetor();
     }
     public function getSubSetor(){
-      return $this->subsetor;
+      return $this->local->getSubSetor();
     }
     public function setTelefone($telefone){
       $this->telefone = $telefone;
@@ -102,16 +97,16 @@
       $this->site = $site;
     }
     public function setDataInicio($data)    {
-      $this->data_inicio = implode('-', array_reverse(explode('/', $data)));
+      $this->local->setDataInicio(implode('-', array_reverse(explode('/', $data))));
     }
     public function setDataFim($data)    {
-      $this->data_fim = implode('-', array_reverse(explode('/', $data)));
+      $this->local->setDataFimdata_fim(implode('-', array_reverse(explode('/', $data))));
     }
     public function getDataInicio(){
-      return $this->data_inicio;
+      return $this->local->getDataInicio();
     }
     public function getDataFim(){
-      return $this->data_fim;
+      return $this->local->getDataFim();
     }
     public function setNomeFantasia($nome_fantasia){
       $this->nome_fantasia = $nome_fantasia;
@@ -157,10 +152,10 @@
     private function salvarHorario(){
       //Inserindo o horário de funcionamento
       $retorno = 0;
-      if(!empty($this->horario_inicio) && !empty($this->horario_fim)){
+      if(!empty($this->horario->getHorarioInicio()) && !empty($this->horario->getHorarioFim)){
         require_once('../control/Connection.php');
         $conn = Connection::open();
-        $query = "INSERT INTO `estabelecimento_horario`(`cnpj`, `horario_inicio`, `horario_fim`) VALUES ('$this->cnpj', '$this->horario_inicio', '$this->horario_fim');";
+        $query = "INSERT INTO `estabelecimento_horario`(`cnpj`, `horario_inicio`, `horario_fim`) VALUES ('$this->cnpj', '$this->horario->getHorarioInicio()', '$this->horario->getHorarioFim()');";
         $retorno = mysqli_query($conn,$query);
         Connection::closeConnection($conn);
 
@@ -172,11 +167,11 @@
       //Inserindo o local que esse estabelecimento fica:
       require_once('../control/Connection.php');
       $conn = Connection::open();
-      if(!empty($this->setor) && !empty($this->subsetor)  && !empty($this->data_inicio)){
-        if(!empty($this->data_fim))
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$this->setor','$this->subsetor','$this->data_inicio','$this->data_fim');";
+      if(!empty($this->local->getSetor()) && !empty($this->local->getSubSetor())  && !empty($this->local->getDataInicio())){
+        if(!empty($this->local->getDataFim()))
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`, `data_fim`) VALUES ('$this->cnpj','$this->local->getSetor()','$this->local->getSubSetor()','$this->local->getDataInicio()','$this->local->getDataFim()');";
         else
-          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$this->setor','$this->subsetor','$this->data_inicio');";
+          $query = "INSERT INTO `estabelecimento_local`(`cnpj`, `setor`, `subsetor`, `data_inicio`) VALUES ('$this->cnpj','$this->local->getSetor()','$this->local->getSubSetor()','$this->local->getDataFim()');";
         if(mysqli_query($conn,$query))
         {
           Connection::closeConnection($conn);
@@ -247,8 +242,8 @@
       $result = mysqli_query($conn,$query);
       Connection::closeConnection($conn);
       if($row = mysqli_fetch_assoc($result)){
-        $this->horario_inicio = $row['horario_inicio'];
-        $this->horario_fim = $row['horario_fim'];
+        $this->horario->setHorarioInicio($row['horario_inicio']);
+        $this->horario->setHorarioFim($row['horario_fim']);
       }
     }
     public function carregarLocal(){
@@ -257,10 +252,10 @@
       $result = mysqli_query($conn,$query);
       Connection::closeConnection($conn);
       if($row = mysqli_fetch_assoc($result)){
-          $this->data_inicio = $row['data_inicio'];
-          $this->data_fim = $row['data_fim'];
-          $this->setor = $row['setor'];
-          $this->subsetor = $row['subsetor'];
+          $this->local->setDataInicio($row['data_inicio']);
+          $this->local->setDataFim($row['data_fim']);
+          $this->local->setSetor($row['setor']);
+          $this->local->setSubSetor($row['subsetor']);
       }
     }
   }

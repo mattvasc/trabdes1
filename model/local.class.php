@@ -2,7 +2,11 @@
   class Local{
     private $setor;
     private $substor;
-    private $area;
+    private $data_inicio;
+    private $data_fim;
+    public function __construct(){
+      /* Oi mundo =))) */
+    }
     public function getSetor(){
       return $this->setor;
     }
@@ -15,12 +19,17 @@
     public function setSubsetor($subsetor){
       $this->subsetor = $subsetor;
     }
-    public function getArea(){
-      return $this->area;
+    public function getDataInicio(){
+      return $this->data_inicio;
     }
-    public function setArea($area){
-      if($area>0)
-        $this->area = $area;
+    public function getDataFim(){
+      return $this->data_fim;
+    }
+    public function setDataInicio($data_inicio){
+      $this->data_inicio = $data_inicio;
+    }
+    public function setDataFim($data_fim){
+      $this->data_fim = $data_fim;
     }
   }
 ?>

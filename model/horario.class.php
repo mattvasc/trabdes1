@@ -1,26 +1,25 @@
 <?php
   class Horario {
-    private $dia_semana;
-    private $hora_inicio;
-    private $hora_fim;
-    public function setHoraInicio($hora_inicio){
-      $this->hora_inicio = $hora_inicio;
+    private $horario_inicio;
+    private $horario_fim;
+    public function __construct(){
+      $num_args = func_num_args();
+      if($num_args == 2){
+        $this->horario_inicio = func_get_arg(0);
+        $this->horario_fim = func_get_arg(1);
+      }
     }
-    public function setHoraFim($hora_fim){
-      $this->hora_fim = $hora_fim;
+    public function setHorarioInicio($horario_inicio){
+      $this->horario_inicio = $horario_inicio;
     }
-    public function getHoraInicio(){
-      return $this->hora_inicio;
+    public function setHorarioFim($horario_fim){
+      $this->horario_fim = $horario_fim;
     }
-    public function getHoraFim(){
-      return $this->hora_fim;
+    public function getHorarioInicio(){
+      return $this->horario_inicio;
     }
-    public function setDiaSemana($dia_semana){
-      if($dia_semana>=0 and $dia_semana <= 6)
-        $this->dia_semana = $dia_semana;
-    }
-    public function getDiaSemana($dia_semana){
-      return $this->dia_semana;
+    public function getHorarioFim(){
+      return $this->horario_fim;
     }
   }
 ?>
