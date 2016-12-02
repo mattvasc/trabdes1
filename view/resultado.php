@@ -62,18 +62,21 @@
 				$(document).ready(function(){
 				$('.cnpj-mask').mask('00.000.000/0000-00', {reverse: false});
 				});
-				function desativar(cnpj){
-				var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj+"?");
-				if (r) {
-				$.ajax({
-				url: '../control/apagar.php',
-				type: "POST",
-				data: {cnpj:cnpj},
-				success: function (result) {
-				// you will get response from your php page (what you echo or print)
-				}
-				});
-				}
+
+				function desativar(cnpj_arg)
+				{
+					var r = confirm("Tem certeza de que gostaria de desativar o estabelecimento de CPNJ: "+cnpj_arg+"?");
+					if (r) {
+					$.ajax({
+					url: '../control/apagar.php',
+					type: "POST",
+					data: {cnpj:cnpj_arg},
+					success: function (result) {
+							alert("Estabelecimento desativado com sucesso!");
+							window.location.href = "../index.php";
+						}
+					});
+					}
 				}
 
     </script>

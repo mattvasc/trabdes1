@@ -18,12 +18,13 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
         // descobre o cnpj, se nao for o item da busca
 		$date  = date('Y-m-d');
       if ($_POST["tipo"]=="nome_fantasia") {
-           $query = "SELECT DISTINCT `estabelecimento`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (`nome_fantasia` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
+           $query = "SELECT DISTINCT `estabelecimento`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (`nome_fantasia` LIKE '%$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="cnpj") {
            $query = "SELECT DISTINCT temp.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS  temp	 WHERE (temp.`cnpj` = '$consulta') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="razao_social") {
-           //$query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
-           $query = "SELECT DISTINCT `cnpj` FROM `estabelecimento` NATURAL JOIN estabelecimento_local WHERE (`razao_social` LIKE '$consulta%') AND (`data_fim` IS NULL OR `data_fim` > '$date')";
+          file_put_contents("razao",$_POST["consulta_dado"]);
+          //  $query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
+           $query = "SELECT DISTINCT estabelecimento.`cnpj` FROM `estabelecimento`  INNER JOIN estabelecimento_local ON estabelecimento.cnpj = estabelecimento_local.cnpj WHERE (`razao_social` LIKE '%$consulta%') AND (`data_fim` IS NULL OR `data_fim` > '$date')";
       }elseif ($_POST["tipo"]=="categoria") {
            $query = "SELECT DISTINCT estabelecimento_categoria.cnpj FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (0 ";
            $consulta = '';
@@ -64,11 +65,11 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
       }
         unlink("query_rodada.txt");
         file_put_contents("query_rodada.txt","Query: ". $query, FILE_APPEND);
-        file_put_contents("query_rodada.txt","consulta_dado: ".$consulta, FILE_APPEND);
 
 
             $result = mysqli_query($conn, $query);
             if($result){
+                  file_put_contents("72","");
                   $estabelecimento = array();
                   while($row = mysqli_fetch_array($result)){
                       $estabelecimento[] = new Estabelecimento($row['cnpj']);

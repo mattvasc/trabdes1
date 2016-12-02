@@ -118,6 +118,7 @@
       $this->n_funcionario = $n_funcionario;
     }
     private function salvarCategoria(){
+      file_put_contents("Salvando_categoria.txt","entrou");
       require_once('../control/Connection.php');
       $conn = Connection::open();
       // Inserindo as categorias no que esse estabelecimento se associa no banco:

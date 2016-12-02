@@ -6,6 +6,7 @@
 
       $date  = date('Y-m-d');
       $query = "UPDATE `estabelecimento_local` SET `data_fim`='$date' WHERE data_fim is NULL AND `cnpj`='".$_POST['cnpj']."';";
+      file_put_contents("query_rodada.txt",$query);
       $result =  mysqli_query($conn, $query);
       if(mysqli_fetch_assoc($result))
         echo json_encode("1");

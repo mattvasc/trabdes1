@@ -98,8 +98,10 @@
     };
   </script>
 <?php
+
 if(!empty($_POST))
 {
+
   require_once("../model/estabelecimento.class.php");
   if(isset($_POST['cnpj'], $_POST['razao_social'], $_POST['nome_fantasia'], $_POST['setor'], $_POST['subsetor'], $_POST['chkBx'], $_POST['data_inicio'], $_POST['horario']))
   {

@@ -11,6 +11,7 @@ if(!empty($_POST))
       if($estabelecimento->salvarResponsavel($responsavel)){
         ?>
         <script>
+        alert('Salvo com sucesso!');
         window.location.href="#";
         </script>
         <?php

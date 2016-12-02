@@ -27,12 +27,10 @@
 				while (select.length > 1) {
 					select.remove(select.length-1);
 				}
-
 				return $.ajax({
 					url: '../control/setor.php',
 					type: "POST",
 					data: { Setor: $('#setor').val(), busca_limpa : 2, cnpj: document.getElementById("cnpj-semmask").value },
-					// dataType: 'application/json; charset=utf-8',
 					success: function (result) {
 						result = JSON.parse(result);
 							for (var x = 0; x < result.length; x++) {
@@ -51,9 +49,9 @@
 					document.getElementById('nome_fantasia').value= '<?php echo $estabelecimento->getNomeFantasia();?>';
 					document.getElementById('n_funcionario').value= '<?php echo $estabelecimento->getNFuncionario();?>';
 					$('#horario').val("<?php echo $estabelecimento->getHorarioInicio().','.$estabelecimento->getHorarioFim();?>");
-					document.getElementById('cnpj-semmask').value = document.getElementById('cnpj');
+					document.getElementById('cnpj-semmask').value = document.getElementById('cnpj').value;
 					$('#cnpj').mask('00.000.000/0000-00');
-					$('#setor').val("<?php echo $estabelecimento->getSetor();?>");
+		//			$('#setor').val("<?php echo $estabelecimento->getSetor();?>");
 
 					document.getElementById('data_inicio').value= '<?php echo implode('/',array_reverse(explode('-',$estabelecimento->getDataInicio())));?>';
 					<?php if($estabelecimento->getDataFim()){
