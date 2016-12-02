@@ -22,7 +22,8 @@ if (empty($_POST) || !isset($_POST['tipo'])) {
       }elseif ($_POST["tipo"]=="cnpj") {
            $query = "SELECT DISTINCT temp.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS  temp	 WHERE (temp.`cnpj` = '$consulta') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
       }elseif ($_POST["tipo"]=="razao_social") {
-           $query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
+           //$query = "SELECT DISTINCT `temp`.`cnpj` FROM `estabelecimento` JOIN estabelecimento_local AS temp WHERE (temp.`razao_social` LIKE '$consulta%') AND (temp.`data_fim` IS NULL OR temp.`data_fim` > '$date');";
+           $query = "SELECT DISTINCT `cnpj` FROM `estabelecimento` NATURAL JOIN estabelecimento_local WHERE (`razao_social` LIKE '$consulta%') AND (`data_fim` IS NULL OR `data_fim` > '$date')";
       }elseif ($_POST["tipo"]=="categoria") {
            $query = "SELECT DISTINCT estabelecimento_categoria.cnpj FROM `estabelecimento_categoria` INNER JOIN estabelecimento_local ON estabelecimento_categoria.cnpj = estabelecimento_local.cnpj WHERE (`data_fim` IS NULL OR `data_fim` > '$date') AND (0 ";
            $consulta = '';
