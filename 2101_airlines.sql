@@ -1,12 +1,27 @@
+-- phpMyAdmin SQL Dump
+-- version 4.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Dec 02, 2016 at 01:50 AM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 7.0.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "-03:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
 --
 -- Database: `2101_airlines`
 --
-CREATE DATABASE IF NOT EXISTS `2101_airlines` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `2101_airlines`;
-
--- --------------------------------------------------------
 CREATE DATABASE `2101_airlines`;
 USE `2101_airlines`;
+-- --------------------------------------------------------
 --
 -- Table structure for table `categoria`
 --
