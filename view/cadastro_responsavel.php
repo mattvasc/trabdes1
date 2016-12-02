@@ -25,7 +25,8 @@
 	<title>Cadastro: Responsável</title>
     <script src="assets/js/jquery-3.1.1.js"></script>
     <script src="assets/js/jquery.mask.js"></script>
-
+  <link rel="icon" href="assets/icone.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="assets/icone.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="assets/css/demo.css">
 	<link rel="stylesheet" href="assets/css/form-validation.css">
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
